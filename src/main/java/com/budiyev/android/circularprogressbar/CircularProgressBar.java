@@ -433,7 +433,7 @@ public class CircularProgressBar extends View {
         }
     }
 
-    public class Configurator {
+    public final class Configurator {
         private long progressAnimationDuration;
         private long indeterminateGrowAnimationDuration;
         private long indeterminateSweepAnimationDuration;
