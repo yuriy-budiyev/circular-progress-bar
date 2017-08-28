@@ -1,2 +1,2 @@
-# circular-progress-bar
+# CircularProgressBar
 Circular progress bar

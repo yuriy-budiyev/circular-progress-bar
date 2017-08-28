@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircularProgressBar">
+        <attr name="maximum" format="float"/>
+        <attr name="progress" format="float"/>
+        <attr name="startAngle" format="float"/>
+        <attr name="indeterminateMinimumAngle" format="float"/>
+        <attr name="progressAnimationDuration" format="integer"/>
+        <attr name="indeterminateGrowAnimationDuration" format="integer"/>
+        <attr name="indeterminateSweepAnimationDuration" format="integer"/>
+        <attr name="foregroundStrokeColor" format="color"/>
+        <attr name="backgroundStrokeColor" format="color"/>
+        <attr name="foregroundStrokeWidth" format="dimension"/>
+        <attr name="backgroundStrokeWidth" format="dimension"/>
+        <attr name="animateProgress" format="boolean"/>
+        <attr name="drawBackgroundStroke" format="boolean"/>
+        <attr name="indeterminate" format="boolean"/>
+    </declare-styleable>
+</resources>
