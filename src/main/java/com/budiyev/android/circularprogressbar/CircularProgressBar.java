@@ -46,8 +46,6 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
-import com.budiyev.android.codescanner.R;
-
 /**
  * Circular progress bar
  */
