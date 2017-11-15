@@ -623,11 +623,17 @@ public class CircularProgressBar extends View {
 
         @Override
         public void onAnimationRepeat(Animator animation) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                mIndeterminateStartAnimator.pause();
+            }
             boolean growMode = !mIndeterminateGrowMode;
             mIndeterminateGrowMode = growMode;
             if (growMode) {
                 mIndeterminateOffsetAngle =
                         (mIndeterminateOffsetAngle + mIndeterminateMinimumAngle * 2f) % 360f;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                mIndeterminateStartAnimator.resume();
             }
         }
     }
