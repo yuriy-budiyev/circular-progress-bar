@@ -5,13 +5,13 @@ Circular progress bar
 
 ### Usage
 Add dependency:
-```
+```gradle
 dependencies {
-    implementation 'com.budiyev.android:circular-progress-bar:1.0.0'
+    implementation 'com.budiyev.android:circular-progress-bar:1.0.1'
 }
 ```
 Define a view in your layout file:
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -39,8 +39,8 @@ Define a view in your layout file:
         app:startAngle="270"/>
 </FrameLayout>
 ```
-And add following code to your activity:
-```
+And (or) add following code to your activity:
+```java
 public class MainActivity extends AppCompatActivity {
    @Override
    protected void onCreate(Bundle savedInstanceState) {
