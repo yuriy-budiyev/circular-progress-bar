@@ -67,10 +67,10 @@ public class CircularProgressBar extends View {
     private float mMaximum;
     private float mProgress;
     private float mStartAngle;
-    private float mIndeterminateGrowAngle;
+    private float mIndeterminateStartAngle;
     private float mIndeterminateSweepAngle;
+    private float mIndeterminateOffsetAngle;
     private float mIndeterminateMinimumAngle;
-    private float mIndeterminateGrowAngleOffset;
     private boolean mIndeterminate;
     private boolean mAnimateProgress;
     private boolean mDrawBackgroundStroke;
@@ -190,31 +190,27 @@ public class CircularProgressBar extends View {
         if (mDrawBackgroundStroke) {
             canvas.drawOval(mDrawRect, mBackgroundStrokePaint);
         }
-        Paint foregroundPaint = mForegroundStrokePaint;
+        float start;
+        float sweep;
         if (mIndeterminate) {
-            float startAngle;
-            float sweepAngle;
+            float startAngle = mIndeterminateStartAngle;
+            float sweepAngle = mIndeterminateSweepAngle;
+            float offsetAngle = mIndeterminateOffsetAngle;
+            float minimumAngle = mIndeterminateMinimumAngle;
             if (mIndeterminateGrowMode) {
-                startAngle = mIndeterminateGrowAngle - mIndeterminateGrowAngleOffset;
-                sweepAngle = mIndeterminateSweepAngle + mIndeterminateMinimumAngle;
+                start = startAngle - offsetAngle;
+                sweep = sweepAngle + minimumAngle;
             } else {
-                startAngle = mIndeterminateGrowAngle + mIndeterminateSweepAngle -
-                        mIndeterminateGrowAngleOffset;
-                sweepAngle = 360f - mIndeterminateSweepAngle - mIndeterminateMinimumAngle;
+                start = startAngle + sweepAngle - offsetAngle;
+                sweep = 360f - sweepAngle - minimumAngle;
             }
-            canvas.drawArc(mDrawRect, startAngle, sweepAngle, false, foregroundPaint);
         } else {
-            float progress;
-            if (mProgress > mMaximum) {
-                progress = mMaximum;
-            } else if (mProgress < -mMaximum) {
-                progress = -mMaximum;
-            } else {
-                progress = mProgress;
-            }
-            float sweepAngle = 360f * progress / mMaximum;
-            canvas.drawArc(mDrawRect, mStartAngle, sweepAngle, false, foregroundPaint);
+            float maximum = mMaximum;
+            float progress = mProgress;
+            start = mStartAngle;
+            sweep = 360f * Math.abs(progress) > Math.abs(maximum) ? maximum : progress / maximum;
         }
+        canvas.drawArc(mDrawRect, start, sweep, false, mForegroundStrokePaint);
     }
 
     private void initialize(@NonNull Context context, @Nullable AttributeSet attributeSet,
@@ -232,7 +228,7 @@ public class CircularProgressBar extends View {
             mMaximum = DEFAULT_MAXIMUM;
             mProgress = DEFAULT_PROGRESS;
             mStartAngle = DEFAULT_START_ANGLE;
-            mIndeterminateGrowAngle = 0F;
+            mIndeterminateStartAngle = 0F;
             mIndeterminateSweepAngle = 0F;
             mIndeterminateMinimumAngle = DEFAULT_INDETERMINATE_MINIMUM_ANGLE;
             mProgressAnimator.setDuration(DEFAULT_PROGRESS_ANIMATION_DURATION);
@@ -399,8 +395,6 @@ public class CircularProgressBar extends View {
         private float maximum;
         private float progress;
         private float startAngle;
-        private float indeterminateGrowAngle;
-        private float indeterminateSweepAngle;
         private float indeterminateMinimumAngle;
         private float foregroundStrokeWidth;
         private float backgroundStrokeWidth;
@@ -417,8 +411,6 @@ public class CircularProgressBar extends View {
             maximum = mMaximum;
             progress = mProgress;
             startAngle = mStartAngle;
-            indeterminateGrowAngle = mIndeterminateGrowAngle;
-            indeterminateSweepAngle = mIndeterminateSweepAngle;
             indeterminateMinimumAngle = mIndeterminateMinimumAngle;
             indeterminate = mIndeterminate;
             animateProgress = mAnimateProgress;
@@ -452,8 +444,6 @@ public class CircularProgressBar extends View {
             foregroundStrokePaint.setStrokeWidth(foregroundStrokeWidth);
             backgroundStrokePaint.setStrokeWidth(backgroundStrokeWidth);
             mStartAngle = startAngle;
-            mIndeterminateGrowAngle = indeterminateGrowAngle;
-            mIndeterminateSweepAngle = indeterminateSweepAngle;
             mIndeterminateMinimumAngle = indeterminateMinimumAngle;
             mDrawBackgroundStroke = drawBackgroundStroke;
             invalidateDrawRect();
@@ -496,24 +486,6 @@ public class CircularProgressBar extends View {
         @NonNull
         public Configurator startAngle(float value) {
             startAngle = value;
-            return this;
-        }
-
-        /**
-         * Grow angle for indeterminate mode
-         */
-        @NonNull
-        public Configurator indeterminateGrowAngle(float value) {
-            indeterminateGrowAngle = value;
-            return this;
-        }
-
-        /**
-         * Sweep angle for indeterminate mode
-         */
-        @NonNull
-        public Configurator indeterminateSweepAngle(float value) {
-            indeterminateSweepAngle = value;
             return this;
         }
 
@@ -623,7 +595,7 @@ public class CircularProgressBar extends View {
     private final class GrowUpdateListener implements ValueAnimator.AnimatorUpdateListener {
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
-            mIndeterminateGrowAngle = (float) animation.getAnimatedValue();
+            mIndeterminateStartAngle = (float) animation.getAnimatedValue();
             invalidate();
         }
     }
@@ -653,10 +625,11 @@ public class CircularProgressBar extends View {
 
         @Override
         public void onAnimationRepeat(Animator animation) {
-            mIndeterminateGrowMode = !mIndeterminateGrowMode;
-            if (mIndeterminateGrowMode) {
-                mIndeterminateGrowAngleOffset =
-                        (mIndeterminateGrowAngleOffset + mIndeterminateMinimumAngle * 2f) % 360f;
+            boolean growMode = !mIndeterminateGrowMode;
+            mIndeterminateGrowMode = growMode;
+            if (growMode) {
+                mIndeterminateOffsetAngle =
+                        (mIndeterminateOffsetAngle + mIndeterminateMinimumAngle * 2f) % 360f;
             }
         }
     }
