@@ -314,11 +314,7 @@ public class CircularProgressBar extends View {
     }
 
     private boolean isLaidOutCompat() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return isLaidOut();
-        } else {
-            return getWidth() > 0 && getHeight() > 0;
-        }
+        return getWidth() > 0 && getHeight() > 0;
     }
 
     private void invalidateDrawRect() {
@@ -642,17 +638,17 @@ public class CircularProgressBar extends View {
     private final class SweepAnimatorListener implements ValueAnimator.AnimatorListener {
         @Override
         public void onAnimationStart(Animator animation) {
-
+            // Do nothing
         }
 
         @Override
         public void onAnimationEnd(Animator animation) {
-
+            // Do nothing
         }
 
         @Override
         public void onAnimationCancel(Animator animation) {
-
+            // Do nothing
         }
 
         @Override
