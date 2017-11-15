@@ -189,6 +189,7 @@ public class CircularProgressBar extends View {
         if (mDrawBackgroundStroke) {
             canvas.drawOval(mDrawRect, mBackgroundStrokePaint);
         }
+        Paint foregroundPaint = mForegroundStrokePaint;
         if (mIndeterminate) {
             float startAngle;
             float sweepAngle;
@@ -200,7 +201,7 @@ public class CircularProgressBar extends View {
                         mIndeterminateGrowAngleOffset;
                 sweepAngle = 360f - mIndeterminateSweepAngle - mIndeterminateMinimumAngle;
             }
-            canvas.drawArc(mDrawRect, startAngle, sweepAngle, false, mForegroundStrokePaint);
+            canvas.drawArc(mDrawRect, startAngle, sweepAngle, false, foregroundPaint);
         } else {
             float progress;
             if (mProgress > mMaximum) {
@@ -211,7 +212,7 @@ public class CircularProgressBar extends View {
                 progress = mProgress;
             }
             float sweepAngle = 360f * progress / mMaximum;
-            canvas.drawArc(mDrawRect, mStartAngle, sweepAngle, false, mForegroundStrokePaint);
+            canvas.drawArc(mDrawRect, mStartAngle, sweepAngle, false, foregroundPaint);
         }
     }
 
@@ -297,57 +298,18 @@ public class CircularProgressBar extends View {
             }
         }
         mProgressAnimator.setInterpolator(new DecelerateInterpolator());
-        mProgressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                CircularProgressBar.this.setProgressInternal((float) animation.getAnimatedValue());
-            }
-        });
+        mProgressAnimator.addUpdateListener(new ProgressUpdateListener());
         mIndeterminateGrowAnimator.setFloatValues(360f);
         mIndeterminateGrowAnimator.setRepeatMode(ValueAnimator.RESTART);
         mIndeterminateGrowAnimator.setRepeatCount(ValueAnimator.INFINITE);
         mIndeterminateGrowAnimator.setInterpolator(new LinearInterpolator());
-        mIndeterminateGrowAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                mIndeterminateGrowAngle = (float) animation.getAnimatedValue();
-                CircularProgressBar.this.invalidate();
-            }
-        });
+        mIndeterminateGrowAnimator.addUpdateListener(new GrowUpdateListener());
         mIndeterminateSweepAnimator.setFloatValues(360f - mIndeterminateMinimumAngle * 2f);
         mIndeterminateSweepAnimator.setRepeatMode(ValueAnimator.RESTART);
         mIndeterminateSweepAnimator.setRepeatCount(ValueAnimator.INFINITE);
         mIndeterminateSweepAnimator.setInterpolator(new DecelerateInterpolator());
-        mIndeterminateSweepAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                mIndeterminateSweepAngle = (float) animation.getAnimatedValue();
-                CircularProgressBar.this.invalidate();
-            }
-        });
-        mIndeterminateSweepAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-                mIndeterminateGrowMode = !mIndeterminateGrowMode;
-                if (mIndeterminateGrowMode) {
-                    mIndeterminateGrowAngleOffset =
-                            (mIndeterminateGrowAngleOffset + mIndeterminateMinimumAngle * 2f) %
-                                    360f;
-                }
-            }
-        });
+        mIndeterminateSweepAnimator.addUpdateListener(new SweepUpdateListener());
+        mIndeterminateSweepAnimator.addListener(new SweepAnimatorListener());
     }
 
     private boolean isLaidOutCompat() {
@@ -485,6 +447,7 @@ public class CircularProgressBar extends View {
             mProgressAnimator.setDuration(progressAnimationDuration);
             mIndeterminateGrowAnimator.setDuration(indeterminateGrowAnimationDuration);
             mIndeterminateSweepAnimator.setDuration(indeterminateSweepAnimationDuration);
+            mIndeterminateSweepAnimator.setFloatValues(360f - indeterminateMinimumAngle * 2f);
             Paint foregroundStrokePaint = mForegroundStrokePaint;
             Paint backgroundStrokePaint = mBackgroundStrokePaint;
             foregroundStrokePaint.setColor(foregroundStrokeColor);
@@ -650,6 +613,54 @@ public class CircularProgressBar extends View {
         public Configurator backgroundStrokeWidth(@Px int value) {
             backgroundStrokeWidth = value;
             return this;
+        }
+    }
+
+    private final class ProgressUpdateListener implements ValueAnimator.AnimatorUpdateListener {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            setProgressInternal((float) animation.getAnimatedValue());
+        }
+    }
+
+    private final class GrowUpdateListener implements ValueAnimator.AnimatorUpdateListener {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            mIndeterminateGrowAngle = (float) animation.getAnimatedValue();
+            invalidate();
+        }
+    }
+
+    private final class SweepUpdateListener implements ValueAnimator.AnimatorUpdateListener {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            mIndeterminateSweepAngle = (float) animation.getAnimatedValue();
+        }
+    }
+
+    private final class SweepAnimatorListener implements ValueAnimator.AnimatorListener {
+        @Override
+        public void onAnimationStart(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+            mIndeterminateGrowMode = !mIndeterminateGrowMode;
+            if (mIndeterminateGrowMode) {
+                mIndeterminateGrowAngleOffset =
+                        (mIndeterminateGrowAngleOffset + mIndeterminateMinimumAngle * 2f) % 360f;
+            }
         }
     }
 }

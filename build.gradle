@@ -5,8 +5,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-beta3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }
@@ -41,7 +41,7 @@ ext {
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.3"
 
     defaultConfig {
         minSdkVersion 14
@@ -63,7 +63,7 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:support-annotations:26.0.1'
+    api 'com.android.support:support-annotations:26.1.0'
 }
 
 group = publishedGroupId
@@ -98,16 +98,6 @@ install {
                     developerConnection gitUrl
                     url siteUrl
                 }
-            }
-        }
-
-        pom.withXml {
-            def dependenciesNode = asNode().appendNode('dependencies')
-            configurations.getByName('api').allDependencies.each {
-                def dependencyNode = dependenciesNode.appendNode('dependency')
-                dependencyNode.appendNode('groupId', it.group)
-                dependencyNode.appendNode('artifactId', it.name)
-                dependencyNode.appendNode('version', it.version)
             }
         }
     }
@@ -156,6 +146,7 @@ bintray {
 
         version {
             desc = libraryDescription
+            vcsTag = 'v' + libraryVersion
         }
     }
 }
