@@ -228,8 +228,6 @@ public class CircularProgressBar extends View {
             mMaximum = DEFAULT_MAXIMUM;
             mProgress = DEFAULT_PROGRESS;
             mStartAngle = DEFAULT_START_ANGLE;
-            mIndeterminateStartAngle = 0F;
-            mIndeterminateSweepAngle = 0F;
             mIndeterminateMinimumAngle = DEFAULT_INDETERMINATE_MINIMUM_ANGLE;
             mProgressAnimator.setDuration(DEFAULT_PROGRESS_ANIMATION_DURATION);
             mIndeterminate = DEFAULT_INDETERMINATE;
