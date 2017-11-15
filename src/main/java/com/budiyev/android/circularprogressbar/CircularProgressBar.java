@@ -82,24 +82,25 @@ public class CircularProgressBar extends View {
     private ValueAnimator mIndeterminateGrowAnimator;
     private ValueAnimator mIndeterminateSweepAnimator;
 
-    public CircularProgressBar(Context context) {
+    public CircularProgressBar(@NonNull Context context) {
         super(context);
         initialize(context, null, 0, 0);
     }
 
-    public CircularProgressBar(Context context, AttributeSet attrs) {
+    public CircularProgressBar(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initialize(context, attrs, 0, 0);
     }
 
-    public CircularProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CircularProgressBar(@NonNull Context context, @Nullable AttributeSet attrs,
+            int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initialize(context, attrs, defStyleAttr, 0);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public CircularProgressBar(Context context, AttributeSet attrs, int defStyleAttr,
-            int defStyleRes) {
+    public CircularProgressBar(@NonNull Context context, @Nullable AttributeSet attrs,
+            int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initialize(context, attrs, defStyleAttr, defStyleRes);
     }
