@@ -136,83 +136,6 @@ public class CircularProgressBar extends View {
         return new Configurator();
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int measuredWidth = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-        int measuredHeight = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-        setMeasuredDimension(measuredWidth, measuredHeight);
-        invalidateDrawRect(measuredWidth, measuredHeight);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        invalidateDrawRect();
-        if (mIndeterminate) {
-            startIndeterminateAnimations();
-        }
-    }
-
-    @Override
-    protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
-        invalidateDrawRect(width, height);
-    }
-
-    @Override
-    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
-        super.onVisibilityChanged(changedView, visibility);
-        if (visibility == VISIBLE) {
-            if (mIndeterminate) {
-                startIndeterminateAnimations();
-            }
-        } else {
-            stopIndeterminateAnimations();
-        }
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (mIndeterminate && isLaidOutCompat()) {
-            startIndeterminateAnimations();
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        stopIndeterminateAnimations();
-        stopProgressAnimation();
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        if (mDrawBackgroundStroke) {
-            canvas.drawOval(mDrawRect, mBackgroundStrokePaint);
-        }
-        float start;
-        float sweep;
-        if (mIndeterminate) {
-            float startAngle = mIndeterminateStartAngle;
-            float sweepAngle = mIndeterminateSweepAngle;
-            float offsetAngle = mIndeterminateOffsetAngle;
-            float minimumAngle = mIndeterminateMinimumAngle;
-            if (mIndeterminateGrowMode) {
-                start = startAngle - offsetAngle;
-                sweep = sweepAngle + minimumAngle;
-            } else {
-                start = startAngle + sweepAngle - offsetAngle;
-                sweep = 360f - sweepAngle - minimumAngle;
-            }
-        } else {
-            float maximum = mMaximum;
-            float progress = mProgress;
-            start = mStartAngle;
-            sweep = 360f * Math.abs(progress) > Math.abs(maximum) ? maximum : progress / maximum;
-        }
-        canvas.drawArc(mDrawRect, start, sweep, false, mForegroundStrokePaint);
-    }
-
     private void initialize(@NonNull Context context, @Nullable AttributeSet attributeSet,
             @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
         mDrawRect = new RectF();
@@ -384,6 +307,83 @@ public class CircularProgressBar extends View {
                 sweepAnimator.start();
             }
         }
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (mDrawBackgroundStroke) {
+            canvas.drawOval(mDrawRect, mBackgroundStrokePaint);
+        }
+        float start;
+        float sweep;
+        if (mIndeterminate) {
+            float startAngle = mIndeterminateStartAngle;
+            float sweepAngle = mIndeterminateSweepAngle;
+            float offsetAngle = mIndeterminateOffsetAngle;
+            float minimumAngle = mIndeterminateMinimumAngle;
+            if (mIndeterminateGrowMode) {
+                start = startAngle - offsetAngle;
+                sweep = sweepAngle + minimumAngle;
+            } else {
+                start = startAngle + sweepAngle - offsetAngle;
+                sweep = 360f - sweepAngle - minimumAngle;
+            }
+        } else {
+            float maximum = mMaximum;
+            float progress = mProgress;
+            start = mStartAngle;
+            sweep = 360f * (Math.abs(progress) >= Math.abs(maximum) ? 1f : progress / maximum);
+        }
+        canvas.drawArc(mDrawRect, start, sweep, false, mForegroundStrokePaint);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int measuredWidth = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        int measuredHeight = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
+        setMeasuredDimension(measuredWidth, measuredHeight);
+        invalidateDrawRect(measuredWidth, measuredHeight);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        invalidateDrawRect();
+        if (mIndeterminate) {
+            startIndeterminateAnimations();
+        }
+    }
+
+    @Override
+    protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+        invalidateDrawRect(width, height);
+    }
+
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (visibility == VISIBLE) {
+            if (mIndeterminate) {
+                startIndeterminateAnimations();
+            }
+        } else {
+            stopIndeterminateAnimations();
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (mIndeterminate && isLaidOutCompat()) {
+            startIndeterminateAnimations();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        stopIndeterminateAnimations();
+        stopProgressAnimation();
     }
 
     public final class Configurator {
