@@ -333,7 +333,11 @@ public class CircularProgressBar extends View {
             float maximum = mMaximum;
             float progress = mProgress;
             start = mStartAngle;
-            sweep = 360f * (Math.abs(progress) >= Math.abs(maximum) ? 1f : progress / maximum);
+            if (Math.abs(progress) >= Math.abs(maximum)) {
+                sweep = 360f;
+            } else {
+                sweep = progress / maximum * 360f;
+            }
         }
         canvas.drawArc(mDrawRect, start, sweep, false, mForegroundStrokePaint);
     }
