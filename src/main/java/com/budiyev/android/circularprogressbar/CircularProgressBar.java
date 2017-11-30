@@ -302,7 +302,6 @@ public class CircularProgressBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
         if (mDrawBackgroundStroke) {
             canvas.drawOval(mDrawRect, mBackgroundStrokePaint);
         }
