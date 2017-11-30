@@ -7,7 +7,7 @@ Circular progress bar
 Add dependency:
 ```gradle
 dependencies {
-    implementation 'com.budiyev.android:circular-progress-bar:1.0.6'
+    implementation 'com.budiyev.android:circular-progress-bar:1.0.7'
 }
 ```
 Define a view in your layout file:
@@ -35,7 +35,7 @@ Define a view in your layout file:
         app:indeterminateArcAnimationDuration="1000"
         app:maximum="100"
         app:progress="50"
-        app:progressAnimationDuration="500"
+        app:progressAnimationDuration="100"
         app:startAngle="270"/>
 </FrameLayout>
 ```
