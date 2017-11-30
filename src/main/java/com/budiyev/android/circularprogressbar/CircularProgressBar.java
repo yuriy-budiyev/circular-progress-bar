@@ -64,6 +64,7 @@ public class CircularProgressBar extends View {
     private static final boolean DEFAULT_ANIMATE_PROGRESS = true;
     private static final boolean DEFAULT_DRAW_BACKGROUND_STROKE = true;
     private static final boolean DEFAULT_INDETERMINATE = false;
+    private final Runnable mSweepRestartAction = new SweepRestartAction();
     private float mMaximum;
     private float mProgress;
     private float mStartAngle;
@@ -597,7 +598,7 @@ public class CircularProgressBar extends View {
                 mIndeterminateOffsetAngle = (mIndeterminateOffsetAngle + mIndeterminateMinimumAngle * 2f) % 360f;
             }
             if (!mCancelled) {
-                animation.start();
+                post(mSweepRestartAction);
             }
         }
 
@@ -609,6 +610,13 @@ public class CircularProgressBar extends View {
         @Override
         public void onAnimationRepeat(Animator animation) {
             // Do nothing
+        }
+    }
+
+    private final class SweepRestartAction implements Runnable {
+        @Override
+        public void run() {
+            mIndeterminateSweepAnimator.start();
         }
     }
 }
