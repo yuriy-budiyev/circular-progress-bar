@@ -616,7 +616,11 @@ public class CircularProgressBar extends View {
             if (growMode) {
                 mIndeterminateOffsetAngle = (mIndeterminateOffsetAngle + mIndeterminateMinimumAngle * 2f) % 360f;
             }
-            mIndeterminateSweepAnimator.start();
+            ValueAnimator animator = mIndeterminateSweepAnimator;
+            if (animator.isRunning()) {
+                animator.cancel();
+            }
+            animator.start();
         }
     }
 }
