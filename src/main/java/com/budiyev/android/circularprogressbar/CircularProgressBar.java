@@ -216,8 +216,6 @@ public class CircularProgressBar extends View {
         mIndeterminateStartAnimator.setInterpolator(new LinearInterpolator());
         mIndeterminateStartAnimator.addUpdateListener(new StartUpdateListener());
         mIndeterminateSweepAnimator.setFloatValues(360f - mIndeterminateMinimumAngle * 2f);
-        mIndeterminateSweepAnimator.setRepeatMode(ValueAnimator.RESTART);
-        mIndeterminateSweepAnimator.setRepeatCount(ValueAnimator.INFINITE);
         mIndeterminateSweepAnimator.setInterpolator(new DecelerateInterpolator());
         mIndeterminateSweepAnimator.addUpdateListener(new SweepUpdateListener());
         mIndeterminateSweepAnimator.addListener(new SweepAnimatorListener());
@@ -600,28 +598,36 @@ public class CircularProgressBar extends View {
     }
 
     private final class SweepAnimatorListener implements ValueAnimator.AnimatorListener {
+        private boolean mCancelled;
+
         @Override
         public void onAnimationStart(Animator animation) {
-            // Do nothing
+            mCancelled = false;
         }
 
         @Override
         public void onAnimationEnd(Animator animation) {
-            // Do nothing
-        }
-
-        @Override
-        public void onAnimationCancel(Animator animation) {
-            // Do nothing
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animation) {
             boolean growMode = !mIndeterminateGrowMode;
             mIndeterminateGrowMode = growMode;
             if (growMode) {
                 mIndeterminateOffsetAngle = (mIndeterminateOffsetAngle + mIndeterminateMinimumAngle * 2f) % 360f;
             }
+            if (!mCancelled) {
+                ValueAnimator animator = mIndeterminateSweepAnimator;
+                if (animator != null) {
+                    animator.start();
+                }
+            }
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+            mCancelled = true;
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+            // Do nothing
         }
     }
 }
