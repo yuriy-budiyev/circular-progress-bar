@@ -236,21 +236,23 @@ public class CircularProgressBar extends View {
     }
 
     private void invalidateDrawRect(int width, int height) {
-        int size;
+        float thickness;
         if (mDrawBackgroundStroke) {
-            size = Math.round(
-                    Math.max(mForegroundStrokePaint.getStrokeWidth(), mBackgroundStrokePaint.getStrokeWidth()));
+            thickness = Math.max(mForegroundStrokePaint.getStrokeWidth(), mBackgroundStrokePaint.getStrokeWidth());
         } else {
-            size = Math.round(mForegroundStrokePaint.getStrokeWidth());
+            thickness = mForegroundStrokePaint.getStrokeWidth();
         }
         if (width > height) {
-            int space = (width - height) / 2;
-            mDrawRect.set(space + size / 2 + 1, size / 2 + 1, width - space - size / 2 - 1, height - size / 2 - 1);
+            float offset = (width - height) / 2f;
+            mDrawRect.set(offset + thickness / 2f + 1f, thickness / 2f + 1f, width - offset - thickness / 2f - 1f,
+                    height - thickness / 2f - 1f);
         } else if (width < height) {
-            int space = (height - width) / 2;
-            mDrawRect.set(size / 2 + 1, space + size / 2 + 1, width - size / 2 - 1, height - space - size / 2 - 1);
+            float offset = (height - width) / 2f;
+            mDrawRect.set(thickness / 2f + 1f, offset + thickness / 2f + 1f, width - thickness / 2f - 1f,
+                    height - offset - thickness / 2f - 1f);
         } else {
-            mDrawRect.set(size / 2 + 1, size / 2 + 1, width - size / 2 - 1, height - size / 2 - 1);
+            mDrawRect.set(thickness / 2f + 1f, thickness / 2f + 1f, width - thickness / 2f - 1f,
+                    height - thickness / 2f - 1f);
         }
     }
 
