@@ -592,11 +592,6 @@ public class CircularProgressBar extends View {
 
         @Override
         public void onAnimationEnd(Animator animation) {
-            boolean growMode = !mIndeterminateGrowMode;
-            mIndeterminateGrowMode = growMode;
-            if (growMode) {
-                mIndeterminateOffsetAngle = (mIndeterminateOffsetAngle + mIndeterminateMinimumAngle * 2f) % 360f;
-            }
             if (!mCancelled) {
                 post(mSweepRestartAction);
             }
@@ -616,6 +611,11 @@ public class CircularProgressBar extends View {
     private final class SweepRestartAction implements Runnable {
         @Override
         public void run() {
+            boolean growMode = !mIndeterminateGrowMode;
+            mIndeterminateGrowMode = growMode;
+            if (growMode) {
+                mIndeterminateOffsetAngle = (mIndeterminateOffsetAngle + mIndeterminateMinimumAngle * 2f) % 360f;
+            }
             mIndeterminateSweepAnimator.start();
         }
     }
