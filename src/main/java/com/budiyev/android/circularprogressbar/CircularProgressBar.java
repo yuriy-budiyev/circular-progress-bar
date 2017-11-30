@@ -58,7 +58,7 @@ public class CircularProgressBar extends View {
     private static final float DEFAULT_INDETERMINATE_MINIMUM_ANGLE = 60f;
     private static final int DEFAULT_FOREGROUND_STROKE_COLOR = Color.BLUE;
     private static final int DEFAULT_BACKGROUND_STROKE_COLOR = Color.BLACK;
-    private static final int DEFAULT_PROGRESS_ANIMATION_DURATION = 500;
+    private static final int DEFAULT_PROGRESS_ANIMATION_DURATION = 100;
     private static final int DEFAULT_INDETERMINATE_ROTATION_ANIMATION_DURATION = 2000;
     private static final int DEFAULT_INDETERMINATE_ARC_ANIMATION_DURATION = 1000;
     private static final boolean DEFAULT_ANIMATE_PROGRESS = true;
@@ -114,6 +114,7 @@ public class CircularProgressBar extends View {
     /**
      * Set current progress value for non-indeterminate mode
      */
+    @MainThread
     public void setProgress(float progress) {
         if (mIndeterminate) {
             mProgress = progress;
@@ -131,6 +132,7 @@ public class CircularProgressBar extends View {
      * Configure progress bar
      */
     @NonNull
+    @MainThread
     public Configurator configure() {
         return new Configurator();
     }
@@ -258,43 +260,31 @@ public class CircularProgressBar extends View {
     }
 
     private void setProgressAnimated(float progress) {
-        ValueAnimator progressAnimator = mProgressAnimator;
-        if (progressAnimator == null) {
-            setProgressInternal(progress);
-        } else {
-            progressAnimator.setFloatValues(mProgress, progress);
-            progressAnimator.start();
-        }
+        mProgressAnimator.setFloatValues(mProgress, progress);
+        mProgressAnimator.start();
     }
 
     private void stopProgressAnimation() {
-        ValueAnimator progressAnimator = mProgressAnimator;
-        if (progressAnimator != null && progressAnimator.isRunning()) {
-            progressAnimator.cancel();
+        if (mProgressAnimator.isRunning()) {
+            mProgressAnimator.cancel();
         }
     }
 
     private void stopIndeterminateAnimations() {
-        ValueAnimator growAnimator = mIndeterminateStartAnimator;
-        if (growAnimator != null && growAnimator.isRunning()) {
-            growAnimator.cancel();
+        if (mIndeterminateStartAnimator.isRunning()) {
+            mIndeterminateStartAnimator.cancel();
         }
-        ValueAnimator sweepAnimator = mIndeterminateSweepAnimator;
-        if (sweepAnimator != null && sweepAnimator.isRunning()) {
-            sweepAnimator.cancel();
+        if (mIndeterminateSweepAnimator.isRunning()) {
+            mIndeterminateSweepAnimator.cancel();
         }
     }
 
     private void startIndeterminateAnimations() {
-        if (isLaidOutCompat()) {
-            ValueAnimator growAnimator = mIndeterminateStartAnimator;
-            if (growAnimator != null && !growAnimator.isRunning()) {
-                growAnimator.start();
-            }
-            ValueAnimator sweepAnimator = mIndeterminateSweepAnimator;
-            if (sweepAnimator != null && !sweepAnimator.isRunning()) {
-                sweepAnimator.start();
-            }
+        if (!mIndeterminateStartAnimator.isRunning()) {
+            mIndeterminateStartAnimator.start();
+        }
+        if (!mIndeterminateSweepAnimator.isRunning()) {
+            mIndeterminateSweepAnimator.start();
         }
     }
 
@@ -332,18 +322,10 @@ public class CircularProgressBar extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int measuredWidth = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-        int measuredHeight = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-        setMeasuredDimension(measuredWidth, measuredHeight);
-        invalidateDrawRect(measuredWidth, measuredHeight);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        invalidateDrawRect();
-        if (mIndeterminate) {
-            startIndeterminateAnimations();
-        }
+        int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
+        setMeasuredDimension(width, height);
+        invalidateDrawRect(width, height);
     }
 
     @Override
@@ -352,21 +334,21 @@ public class CircularProgressBar extends View {
     }
 
     @Override
-    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
-        super.onVisibilityChanged(changedView, visibility);
-        if (visibility == VISIBLE) {
-            if (mIndeterminate) {
+    public void onVisibilityAggregated(boolean visible) {
+        super.onVisibilityAggregated(visible);
+        if (mIndeterminate) {
+            if (visible) {
                 startIndeterminateAnimations();
+            } else {
+                stopIndeterminateAnimations();
             }
-        } else {
-            stopIndeterminateAnimations();
         }
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (mIndeterminate && isLaidOutCompat()) {
+        if (mIndeterminate) {
             startIndeterminateAnimations();
         }
     }
