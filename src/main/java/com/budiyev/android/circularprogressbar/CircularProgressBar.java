@@ -59,8 +59,8 @@ public class CircularProgressBar extends View {
     private static final int DEFAULT_FOREGROUND_STROKE_COLOR = Color.BLUE;
     private static final int DEFAULT_BACKGROUND_STROKE_COLOR = Color.BLACK;
     private static final int DEFAULT_PROGRESS_ANIMATION_DURATION = 500;
-    private static final int DEFAULT_INDETERMINATE_GROW_ANIMATION_DURATION = 2000;
-    private static final int DEFAULT_INDETERMINATE_SWEEP_ANIMATION_DURATION = 1000;
+    private static final int DEFAULT_INDETERMINATE_ROTATION_ANIMATION_DURATION = 2000;
+    private static final int DEFAULT_INDETERMINATE_ARC_ANIMATION_DURATION = 1000;
     private static final boolean DEFAULT_ANIMATE_PROGRESS = true;
     private static final boolean DEFAULT_DRAW_BACKGROUND_STROKE = true;
     private static final boolean DEFAULT_INDETERMINATE = false;
@@ -161,8 +161,8 @@ public class CircularProgressBar extends View {
             mBackgroundStrokePaint.setColor(DEFAULT_BACKGROUND_STROKE_COLOR);
             mBackgroundStrokePaint
                     .setStrokeWidth(Math.round(DEFAULT_BACKGROUND_STROKE_WIDTH_DP * displayMetrics.density));
-            mIndeterminateStartAnimator.setDuration(DEFAULT_INDETERMINATE_GROW_ANIMATION_DURATION);
-            mIndeterminateSweepAnimator.setDuration(DEFAULT_INDETERMINATE_SWEEP_ANIMATION_DURATION);
+            mIndeterminateStartAnimator.setDuration(DEFAULT_INDETERMINATE_ROTATION_ANIMATION_DURATION);
+            mIndeterminateSweepAnimator.setDuration(DEFAULT_INDETERMINATE_ARC_ANIMATION_DURATION);
         } else {
             TypedArray attributes = null;
             try {
@@ -179,11 +179,11 @@ public class CircularProgressBar extends View {
                         .getInteger(R.styleable.CircularProgressBar_progressAnimationDuration,
                                 DEFAULT_PROGRESS_ANIMATION_DURATION));
                 mIndeterminateStartAnimator.setDuration(attributes
-                        .getInteger(R.styleable.CircularProgressBar_indeterminateGrowAnimationDuration,
-                                DEFAULT_INDETERMINATE_GROW_ANIMATION_DURATION));
+                        .getInteger(R.styleable.CircularProgressBar_indeterminateRotationAnimationDuration,
+                                DEFAULT_INDETERMINATE_ROTATION_ANIMATION_DURATION));
                 mIndeterminateSweepAnimator.setDuration(attributes
-                        .getInteger(R.styleable.CircularProgressBar_indeterminateSweepAnimationDuration,
-                                DEFAULT_INDETERMINATE_SWEEP_ANIMATION_DURATION));
+                        .getInteger(R.styleable.CircularProgressBar_indeterminateArcAnimationDuration,
+                                DEFAULT_INDETERMINATE_ARC_ANIMATION_DURATION));
                 mForegroundStrokePaint.setColor(attributes
                         .getColor(R.styleable.CircularProgressBar_foregroundStrokeColor,
                                 DEFAULT_FOREGROUND_STROKE_COLOR));
@@ -380,8 +380,8 @@ public class CircularProgressBar extends View {
 
     public final class Configurator {
         private long progressAnimationDuration;
-        private long indeterminateGrowAnimationDuration;
-        private long indeterminateSweepAnimationDuration;
+        private long indeterminateRotationAnimationDuration;
+        private long indeterminateArcAnimationDuration;
         private float maximum;
         private float progress;
         private float startAngle;
@@ -396,8 +396,8 @@ public class CircularProgressBar extends View {
 
         private Configurator() {
             progressAnimationDuration = mProgressAnimator.getDuration();
-            indeterminateGrowAnimationDuration = mIndeterminateStartAnimator.getDuration();
-            indeterminateSweepAnimationDuration = mIndeterminateSweepAnimator.getDuration();
+            indeterminateRotationAnimationDuration = mIndeterminateStartAnimator.getDuration();
+            indeterminateArcAnimationDuration = mIndeterminateSweepAnimator.getDuration();
             maximum = mMaximum;
             progress = mProgress;
             startAngle = mStartAngle;
@@ -424,8 +424,8 @@ public class CircularProgressBar extends View {
             mMaximum = maximum;
             mAnimateProgress = animateProgress;
             mProgressAnimator.setDuration(progressAnimationDuration);
-            mIndeterminateStartAnimator.setDuration(indeterminateGrowAnimationDuration);
-            mIndeterminateSweepAnimator.setDuration(indeterminateSweepAnimationDuration);
+            mIndeterminateStartAnimator.setDuration(indeterminateRotationAnimationDuration);
+            mIndeterminateSweepAnimator.setDuration(indeterminateArcAnimationDuration);
             mIndeterminateSweepAnimator.setFloatValues(360f - indeterminateMinimumAngle * 2f);
             Paint foregroundStrokePaint = mForegroundStrokePaint;
             Paint backgroundStrokePaint = mBackgroundStrokePaint;
@@ -491,15 +491,15 @@ public class CircularProgressBar extends View {
         /**
          * Grow animation duration in milliseconds for indeterminate mode
          */
-        public void indeterminateGrowAnimationDuration(long value) {
-            indeterminateGrowAnimationDuration = value;
+        public void indeterminateRotationAnimationDuration(long value) {
+            indeterminateRotationAnimationDuration = value;
         }
 
         /**
          * Sweep animation duration in milliseconds for indeterminate mode
          */
-        public void indeterminateSweepAnimationDuration(long value) {
-            indeterminateSweepAnimationDuration = value;
+        public void indeterminateArcAnimationDuration(long value) {
+            indeterminateArcAnimationDuration = value;
         }
 
         /**
@@ -613,9 +613,7 @@ public class CircularProgressBar extends View {
                 mIndeterminateOffsetAngle = (mIndeterminateOffsetAngle + mIndeterminateMinimumAngle * 2f) % 360f;
             }
             if (!mCancelled) {
-                if (!animation.isRunning()) {
-                    animation.start();
-                }
+                animation.start();
             }
         }
 
