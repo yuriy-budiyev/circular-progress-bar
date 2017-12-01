@@ -1,4 +1,4 @@
-# CircularProgressBar
+# Circular Progress Bar
 [ ![Download](https://api.bintray.com/packages/yuriy-budiyev/maven/circular-progress-bar/images/download.svg) ](https://bintray.com/yuriy-budiyev/maven/circular-progress-bar/_latestVersion)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/04aff697e57642bb96579fbaa6cc3dad)](https://www.codacy.com/app/yuriy-budiyev/circular-progress-bar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yuriy-budiyev/circular-progress-bar&amp;utm_campaign=Badge_Grade)
 
