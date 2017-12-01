@@ -1,5 +1,7 @@
 # Circular Progress Bar
 [ ![Download](https://api.bintray.com/packages/yuriy-budiyev/maven/circular-progress-bar/images/download.svg) ](https://bintray.com/yuriy-budiyev/maven/circular-progress-bar/_latestVersion)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Circular%20Progress%20Bar-blue.svg?style=flat)](https://android-arsenal.com/details/1/6515)
+[![API](https://img.shields.io/badge/API-14%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/04aff697e57642bb96579fbaa6cc3dad)](https://www.codacy.com/app/yuriy-budiyev/circular-progress-bar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yuriy-budiyev/circular-progress-bar&amp;utm_campaign=Badge_Grade)
 
 Circular progress bar
