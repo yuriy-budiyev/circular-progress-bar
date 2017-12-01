@@ -54,3 +54,5 @@ public class MainActivity extends AppCompatActivity {
    }
 }
 ```
+### Preview
+![Preview screenshot](https://raw.githubusercontent.com/yuriy-budiyev/circular-progress-bar/master/images/circular_progress_bar_preview.png)
