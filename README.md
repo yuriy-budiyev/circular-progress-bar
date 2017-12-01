@@ -4,7 +4,7 @@
 [![API](https://img.shields.io/badge/API-14%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/04aff697e57642bb96579fbaa6cc3dad)](https://www.codacy.com/app/yuriy-budiyev/circular-progress-bar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yuriy-budiyev/circular-progress-bar&amp;utm_campaign=Badge_Grade)
 
-Circular progress bar
+Circular progress bar, supports animations and indeterminate mode, highly customizable
 
 ### Usage
 Add dependency:
