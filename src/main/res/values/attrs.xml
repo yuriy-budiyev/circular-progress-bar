@@ -13,7 +13,7 @@
         <attr format="float" name="startAngle"/>
         <attr format="boolean" name="indeterminate"/>
         <attr format="float" name="indeterminateMinimumAngle"/>
-        <attr format="integer" name="indeterminateArcAnimationDuration"/>
+        <attr format="integer" name="indeterminateSweepAnimationDuration"/>
         <attr format="integer" name="indeterminateRotationAnimationDuration"/>
     </declare-styleable>
 </resources>
