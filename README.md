@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
        CircularProgressBar progressBar = findViewById(R.id.progress_bar);
        progressBar.setProgress(30f);
        //Progress bar can be fully configured from code
-       progressBar.configure().animateProgress(true).maximum(40).progress(30).apply();
    }
 }
 ```
