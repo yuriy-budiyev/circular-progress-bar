@@ -105,10 +105,16 @@ public class CircularProgressBar extends View {
         initialize(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    /**
+     * Indeterminate mode
+     */
     public boolean isIndeterminate() {
         return mIndeterminate;
     }
 
+    /**
+     * Indeterminate mode, disabled by default
+     */
     public void setIndeterminate(boolean indeterminate) {
         mIndeterminate = indeterminate;
         invalidate();
