@@ -162,8 +162,7 @@ public class CircularProgressBar extends View {
     }
 
     public void setIndeterminateMinimumAngle(float angle) {
-        boolean animating =
-                mIndeterminate && (mIndeterminateStartAnimator.isRunning() || mIndeterminateSweepAnimator.isRunning());
+        boolean animating = isIndeterminateAnimating();
         if (animating) {
             stopIndeterminateAnimations();
         }
@@ -176,8 +175,7 @@ public class CircularProgressBar extends View {
     }
 
     public void setIndeterminateRotationAnimationDuration(@IntRange(from = 0) long duration) {
-        boolean animating =
-                mIndeterminate && (mIndeterminateStartAnimator.isRunning() || mIndeterminateSweepAnimator.isRunning());
+        boolean animating = isIndeterminateAnimating();
         if (animating) {
             stopIndeterminateAnimations();
         }
@@ -189,8 +187,7 @@ public class CircularProgressBar extends View {
     }
 
     public void setIndeterminateSweepAnimationDuration(@IntRange(from = 0) long duration) {
-        boolean animating =
-                mIndeterminate && (mIndeterminateStartAnimator.isRunning() || mIndeterminateSweepAnimator.isRunning());
+        boolean animating = isIndeterminateAnimating();
         if (animating) {
             stopIndeterminateAnimations();
         }
@@ -452,6 +449,10 @@ public class CircularProgressBar extends View {
         if (!mIndeterminateSweepAnimator.isRunning()) {
             mIndeterminateSweepAnimator.start();
         }
+    }
+
+    private boolean isIndeterminateAnimating() {
+        return mIndeterminate && (mIndeterminateStartAnimator.isRunning() || mIndeterminateSweepAnimator.isRunning());
     }
 
     private final class ProgressUpdateListener implements ValueAnimator.AnimatorUpdateListener {
