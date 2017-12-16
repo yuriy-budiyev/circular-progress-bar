@@ -162,35 +162,41 @@ public class CircularProgressBar extends View {
     }
 
     public void setIndeterminateMinimumAngle(float angle) {
-        if (mIndeterminate) {
+        boolean animating =
+                mIndeterminate && (mIndeterminateStartAnimator.isRunning() || mIndeterminateSweepAnimator.isRunning());
+        if (animating) {
             stopIndeterminateAnimations();
         }
         mIndeterminateMinimumAngle = angle;
         mIndeterminateSweepAnimator.setFloatValues(360f - angle * 2f);
         invalidate();
-        if (mIndeterminate) {
+        if (animating) {
             startIndeterminateAnimations();
         }
     }
 
     public void setIndeterminateRotationAnimationDuration(@IntRange(from = 0) long duration) {
-        if (mIndeterminate) {
+        boolean animating =
+                mIndeterminate && (mIndeterminateStartAnimator.isRunning() || mIndeterminateSweepAnimator.isRunning());
+        if (animating) {
             stopIndeterminateAnimations();
         }
         mIndeterminateStartAnimator.setDuration(duration);
         invalidate();
-        if (mIndeterminate) {
+        if (animating) {
             startIndeterminateAnimations();
         }
     }
 
     public void setIndeterminateSweepAnimationDuration(@IntRange(from = 0) long duration) {
-        if (mIndeterminate) {
+        boolean animating =
+                mIndeterminate && (mIndeterminateStartAnimator.isRunning() || mIndeterminateSweepAnimator.isRunning());
+        if (animating) {
             stopIndeterminateAnimations();
         }
         mIndeterminateSweepAnimator.setDuration(duration);
         invalidate();
-        if (mIndeterminate) {
+        if (animating) {
             startIndeterminateAnimations();
         }
     }
