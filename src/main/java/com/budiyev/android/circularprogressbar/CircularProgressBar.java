@@ -142,26 +142,41 @@ public class CircularProgressBar extends View {
         }
     }
 
+    /**
+     * Maximum progress for non-indeterminate mode
+     */
     public float getMaximum() {
         return mMaximum;
     }
 
+    /**
+     * Maximum progress for non-indeterminate mode
+     */
     public void setMaximum(float maximum) {
         mMaximum = maximum;
         invalidate();
     }
 
-    public void setStartAngle(float angle) {
+    /**
+     * Start angle for non-indeterminate mode
+     */
+    public void setStartAngle(@FloatRange(from = 0f, to = 360f) float angle) {
         mStartAngle = angle;
         invalidate();
     }
 
+    /**
+     * Whether to animate progress for non-indeterminate mode
+     */
     public void setAnimateProgress(boolean animate) {
         mAnimateProgress = animate;
         invalidate();
     }
 
-    public void setIndeterminateMinimumAngle(float angle) {
+    /**
+     * Minimum angle for indeterminate mode
+     */
+    public void setIndeterminateMinimumAngle(@FloatRange(from = 0f, to = 360f) float angle) {
         boolean animating = isIndeterminateAnimating();
         if (animating) {
             stopIndeterminateAnimations();
@@ -174,6 +189,9 @@ public class CircularProgressBar extends View {
         }
     }
 
+    /**
+     * Rotation animation duration for indeterminate mode
+     */
     public void setIndeterminateRotationAnimationDuration(@IntRange(from = 0) long duration) {
         boolean animating = isIndeterminateAnimating();
         if (animating) {
@@ -186,6 +204,9 @@ public class CircularProgressBar extends View {
         }
     }
 
+    /**
+     * Sweep animation duration for indeterminate mode
+     */
     public void setIndeterminateSweepAnimationDuration(@IntRange(from = 0) long duration) {
         boolean animating = isIndeterminateAnimating();
         if (animating) {
@@ -198,28 +219,43 @@ public class CircularProgressBar extends View {
         }
     }
 
+    /**
+     * Foreground stroke color
+     */
     public void setForegroundStrokeColor(@ColorInt int color) {
         mForegroundStrokePaint.setColor(color);
         invalidate();
     }
 
+    /**
+     * Foreground stroke width
+     */
     public void setForegroundStrokeWidth(@FloatRange(from = 0f, to = Float.MAX_VALUE) float width) {
         mForegroundStrokePaint.setStrokeWidth(width);
         invalidateDrawRect();
         invalidate();
     }
 
+    /**
+     * Background stroke color
+     */
     public void setBackgroundStrokeColor(@ColorInt int color) {
         mForegroundStrokePaint.setColor(color);
         invalidate();
     }
 
+    /**
+     * Background stroke width
+     */
     public void setBackgroundStrokeWidth(@FloatRange(from = 0f, to = Float.MAX_VALUE) float width) {
         mBackgroundStrokePaint.setStrokeWidth(width);
         invalidateDrawRect();
         invalidate();
     }
 
+    /**
+     * Whether to draw background stroke
+     */
     public void setDrawBackgroundStroke(boolean draw) {
         mDrawBackgroundStroke = draw;
         invalidateDrawRect();
