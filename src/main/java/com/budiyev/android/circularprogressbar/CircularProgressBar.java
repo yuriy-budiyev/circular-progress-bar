@@ -164,7 +164,7 @@ public class CircularProgressBar extends View {
     }
 
     /**
-     * Start angle for non-indeterminate mode (in degrees),between -360 and 360 degrees
+     * Start angle for non-indeterminate mode (in degrees), between -360 and 360 degrees
      */
     public void setStartAngle(@FloatRange(from = -360f, to = 360f) float angle) {
         checkStartAngle(angle);
@@ -180,7 +180,7 @@ public class CircularProgressBar extends View {
     }
 
     /**
-     * Progress animation duration for non- indeterminate mode
+     * Progress animation duration for non-indeterminate mode (in milliseconds)
      */
     public void setProgressAnimationDuration(@IntRange(from = 0) long duration) {
         checkAnimationDuration(duration);
@@ -193,7 +193,7 @@ public class CircularProgressBar extends View {
     }
 
     /**
-     * Minimum angle for indeterminate mode, between 0 and 120 degrees
+     * Minimum angle for indeterminate mode, between 0 and 180 degrees
      */
     public void setIndeterminateMinimumAngle(@FloatRange(from = 0f, to = 180f) float angle) {
         checkIndeterminateMinimumAngle(angle);
@@ -207,7 +207,7 @@ public class CircularProgressBar extends View {
     }
 
     /**
-     * Rotation animation duration for indeterminate mode
+     * Rotation animation duration for indeterminate mode (in milliseconds)
      */
     public void setIndeterminateRotationAnimationDuration(@IntRange(from = 0) long duration) {
         checkAnimationDuration(duration);
@@ -220,7 +220,7 @@ public class CircularProgressBar extends View {
     }
 
     /**
-     * Sweep animation duration for indeterminate mode
+     * Sweep animation duration for indeterminate mode (in milliseconds)
      */
     public void setIndeterminateSweepAnimationDuration(@IntRange(from = 0) long duration) {
         checkAnimationDuration(duration);
