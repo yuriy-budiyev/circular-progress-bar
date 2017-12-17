@@ -164,7 +164,7 @@ public class CircularProgressBar extends View {
     }
 
     /**
-     * Start angle for non-indeterminate mode (in degrees), between -360 and 360 degrees
+     * Start angle for non-indeterminate mode, between -360 and 360 degrees
      */
     public void setStartAngle(@FloatRange(from = -360f, to = 360f) float angle) {
         checkStartAngle(angle);
