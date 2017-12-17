@@ -164,7 +164,7 @@ public class CircularProgressBar extends View {
     }
 
     /**
-     * Start angle for non-indeterminate mode (in degrees)
+     * Start angle for non-indeterminate mode (in degrees),between -360 and 360 degrees
      */
     public void setStartAngle(@FloatRange(from = -360f, to = 360f) float angle) {
         checkStartAngle(angle);
@@ -180,7 +180,20 @@ public class CircularProgressBar extends View {
     }
 
     /**
-     * Minimum angle for indeterminate mode (in degrees)
+     * Progress animation duration for non- indeterminate mode
+     */
+    public void setProgressAnimationDuration(@IntRange(from = 0) long duration) {
+        checkAnimationDuration(duration);
+        if (mVisible) {
+            if (mProgressAnimator.isRunning()) {
+                mProgressAnimator.end();
+            }
+        }
+        mProgressAnimator.setDuration(duration);
+    }
+
+    /**
+     * Minimum angle for indeterminate mode, between 0 and 120 degrees
      */
     public void setIndeterminateMinimumAngle(@FloatRange(from = 0f, to = 120f) float angle) {
         checkIndeterminateMinimumAngle(angle);
@@ -197,6 +210,7 @@ public class CircularProgressBar extends View {
      * Rotation animation duration for indeterminate mode
      */
     public void setIndeterminateRotationAnimationDuration(@IntRange(from = 0) long duration) {
+        checkAnimationDuration(duration);
         stopIndeterminateAnimations();
         mIndeterminateStartAnimator.setDuration(duration);
         invalidate();
@@ -209,6 +223,7 @@ public class CircularProgressBar extends View {
      * Sweep animation duration for indeterminate mode
      */
     public void setIndeterminateSweepAnimationDuration(@IntRange(from = 0) long duration) {
+        checkAnimationDuration(duration);
         stopIndeterminateAnimations();
         mIndeterminateSweepAnimator.setDuration(duration);
         invalidate();
@@ -365,19 +380,27 @@ public class CircularProgressBar extends View {
                                 defStyleRes);
                 mMaximum = attributes.getFloat(R.styleable.CircularProgressBar_maximum, DEFAULT_MAXIMUM);
                 mProgress = attributes.getFloat(R.styleable.CircularProgressBar_progress, DEFAULT_PROGRESS);
-                mStartAngle = attributes.getFloat(R.styleable.CircularProgressBar_startAngle, DEFAULT_START_ANGLE);
-                mIndeterminateMinimumAngle = attributes
-                        .getFloat(R.styleable.CircularProgressBar_indeterminateMinimumAngle,
-                                DEFAULT_INDETERMINATE_MINIMUM_ANGLE);
-                mProgressAnimator.setDuration(attributes
-                        .getInteger(R.styleable.CircularProgressBar_progressAnimationDuration,
-                                DEFAULT_PROGRESS_ANIMATION_DURATION));
-                mIndeterminateStartAnimator.setDuration(attributes
+                float startAngle = attributes.getFloat(R.styleable.CircularProgressBar_startAngle, DEFAULT_START_ANGLE);
+                checkStartAngle(startAngle);
+                mStartAngle = startAngle;
+                float minimumAngle = attributes.getFloat(R.styleable.CircularProgressBar_indeterminateMinimumAngle,
+                        DEFAULT_INDETERMINATE_MINIMUM_ANGLE);
+                checkIndeterminateMinimumAngle(minimumAngle);
+                mIndeterminateMinimumAngle = minimumAngle;
+                long progressDuration = attributes.getInteger(R.styleable.CircularProgressBar_progressAnimationDuration,
+                        DEFAULT_PROGRESS_ANIMATION_DURATION);
+                checkAnimationDuration(progressDuration);
+                mProgressAnimator.setDuration(progressDuration);
+                long rotationDuration = attributes
                         .getInteger(R.styleable.CircularProgressBar_indeterminateRotationAnimationDuration,
-                                DEFAULT_INDETERMINATE_ROTATION_ANIMATION_DURATION));
-                mIndeterminateSweepAnimator.setDuration(attributes
+                                DEFAULT_INDETERMINATE_ROTATION_ANIMATION_DURATION);
+                checkAnimationDuration(rotationDuration);
+                mIndeterminateStartAnimator.setDuration(rotationDuration);
+                long sweepDuration = attributes
                         .getInteger(R.styleable.CircularProgressBar_indeterminateSweepAnimationDuration,
-                                DEFAULT_INDETERMINATE_SWEEP_ANIMATION_DURATION));
+                                DEFAULT_INDETERMINATE_SWEEP_ANIMATION_DURATION);
+                checkAnimationDuration(sweepDuration);
+                mIndeterminateSweepAnimator.setDuration(sweepDuration);
                 mForegroundStrokePaint.setColor(attributes
                         .getColor(R.styleable.CircularProgressBar_foregroundStrokeColor,
                                 DEFAULT_FOREGROUND_STROKE_COLOR));
@@ -402,8 +425,6 @@ public class CircularProgressBar extends View {
                 }
             }
         }
-        checkStartAngle(mStartAngle);
-        checkIndeterminateMinimumAngle(mIndeterminateMinimumAngle);
         mProgressAnimator.setInterpolator(new DecelerateInterpolator());
         mProgressAnimator.addUpdateListener(new ProgressUpdateListener());
         mIndeterminateStartAnimator.setFloatValues(360f);
@@ -490,6 +511,12 @@ public class CircularProgressBar extends View {
         if (angle < 0f || angle > 120f) {
             throw new IllegalArgumentException(
                     "Indeterminate minimum angle value should be between 0 and 120 degrees (inclusive)");
+        }
+    }
+
+    private void checkAnimationDuration(long duration) {
+        if (duration < 0) {
+            throw new IllegalArgumentException("Animation duration can't be negative");
         }
     }
 
