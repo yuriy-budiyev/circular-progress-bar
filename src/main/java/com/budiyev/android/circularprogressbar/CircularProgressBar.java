@@ -164,9 +164,10 @@ public class CircularProgressBar extends View {
     }
 
     /**
-     * Start angle for non-indeterminate mode
+     * Start angle for non-indeterminate mode (in degrees)
      */
-    public void setStartAngle(@FloatRange(from = 0f, to = 360f) float angle) {
+    public void setStartAngle(@FloatRange(from = -360f, to = 360f) float angle) {
+        checkStartAngle(angle);
         mStartAngle = angle;
         invalidate();
     }
@@ -179,9 +180,10 @@ public class CircularProgressBar extends View {
     }
 
     /**
-     * Minimum angle for indeterminate mode
+     * Minimum angle for indeterminate mode (in degrees)
      */
-    public void setIndeterminateMinimumAngle(@FloatRange(from = 0f, to = 360f) float angle) {
+    public void setIndeterminateMinimumAngle(@FloatRange(from = 0f, to = 120f) float angle) {
+        checkIndeterminateMinimumAngle(angle);
         stopIndeterminateAnimations();
         mIndeterminateMinimumAngle = angle;
         mIndeterminateSweepAnimator.setFloatValues(360f - angle * 2f);
@@ -400,6 +402,8 @@ public class CircularProgressBar extends View {
                 }
             }
         }
+        checkStartAngle(mStartAngle);
+        checkIndeterminateMinimumAngle(mIndeterminateMinimumAngle);
         mProgressAnimator.setInterpolator(new DecelerateInterpolator());
         mProgressAnimator.addUpdateListener(new ProgressUpdateListener());
         mIndeterminateStartAnimator.setFloatValues(360f);
@@ -473,6 +477,19 @@ public class CircularProgressBar extends View {
         }
         if (!mIndeterminateSweepAnimator.isRunning()) {
             mIndeterminateSweepAnimator.start();
+        }
+    }
+
+    private void checkStartAngle(float angle) {
+        if (angle < -360f || angle > 360f) {
+            throw new IllegalArgumentException("Start angle value should be between -360 and 360 degrees (inclusive)");
+        }
+    }
+
+    private void checkIndeterminateMinimumAngle(float angle) {
+        if (angle < 0f || angle > 120f) {
+            throw new IllegalArgumentException(
+                    "Indeterminate minimum angle value should be between 0 and 120 degrees (inclusive)");
         }
     }
 
