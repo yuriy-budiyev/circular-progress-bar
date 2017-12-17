@@ -195,7 +195,7 @@ public class CircularProgressBar extends View {
     /**
      * Minimum angle for indeterminate mode, between 0 and 120 degrees
      */
-    public void setIndeterminateMinimumAngle(@FloatRange(from = 0f, to = 120f) float angle) {
+    public void setIndeterminateMinimumAngle(@FloatRange(from = 0f, to = 180f) float angle) {
         checkIndeterminateMinimumAngle(angle);
         stopIndeterminateAnimations();
         mIndeterminateMinimumAngle = angle;
@@ -244,6 +244,7 @@ public class CircularProgressBar extends View {
      * Foreground stroke width (in pixels)
      */
     public void setForegroundStrokeWidth(@FloatRange(from = 0f, to = Float.MAX_VALUE) float width) {
+        checkWidth(width);
         mForegroundStrokePaint.setStrokeWidth(width);
         invalidateDrawRect();
         invalidate();
@@ -261,6 +262,7 @@ public class CircularProgressBar extends View {
      * Background stroke width (in pixels)
      */
     public void setBackgroundStrokeWidth(@FloatRange(from = 0f, to = Float.MAX_VALUE) float width) {
+        checkWidth(width);
         mBackgroundStrokePaint.setStrokeWidth(width);
         invalidateDrawRect();
         invalidate();
@@ -407,12 +409,14 @@ public class CircularProgressBar extends View {
                 mBackgroundStrokePaint.setColor(attributes
                         .getColor(R.styleable.CircularProgressBar_backgroundStrokeColor,
                                 DEFAULT_BACKGROUND_STROKE_COLOR));
-                mForegroundStrokePaint.setStrokeWidth(attributes
-                        .getDimension(R.styleable.CircularProgressBar_foregroundStrokeWidth,
-                                Math.round(DEFAULT_FOREGROUND_STROKE_WIDTH_DP * displayMetrics.density)));
-                mBackgroundStrokePaint.setStrokeWidth(attributes
-                        .getDimension(R.styleable.CircularProgressBar_backgroundStrokeWidth,
-                                Math.round(DEFAULT_BACKGROUND_STROKE_WIDTH_DP * displayMetrics.density)));
+                float foregroundWidth = attributes.getDimension(R.styleable.CircularProgressBar_foregroundStrokeWidth,
+                        Math.round(DEFAULT_FOREGROUND_STROKE_WIDTH_DP * displayMetrics.density));
+                checkWidth(foregroundWidth);
+                mForegroundStrokePaint.setStrokeWidth(foregroundWidth);
+                float backgroundWidth = attributes.getDimension(R.styleable.CircularProgressBar_backgroundStrokeWidth,
+                        Math.round(DEFAULT_BACKGROUND_STROKE_WIDTH_DP * displayMetrics.density));
+                checkWidth(backgroundWidth);
+                mBackgroundStrokePaint.setStrokeWidth(backgroundWidth);
                 mAnimateProgress = attributes
                         .getBoolean(R.styleable.CircularProgressBar_animateProgress, DEFAULT_ANIMATE_PROGRESS);
                 mDrawBackgroundStroke = attributes.getBoolean(R.styleable.CircularProgressBar_drawBackgroundStroke,
@@ -508,15 +512,21 @@ public class CircularProgressBar extends View {
     }
 
     private void checkIndeterminateMinimumAngle(float angle) {
-        if (angle < 0f || angle > 120f) {
+        if (angle < 0f || angle > 180f) {
             throw new IllegalArgumentException(
-                    "Indeterminate minimum angle value should be between 0 and 120 degrees (inclusive)");
+                    "Indeterminate minimum angle value should be between 0 and 180 degrees (inclusive)");
         }
     }
 
     private void checkAnimationDuration(long duration) {
         if (duration < 0) {
             throw new IllegalArgumentException("Animation duration can't be negative");
+        }
+    }
+
+    private void checkWidth(float width) {
+        if (width < 0f) {
+            throw new IllegalArgumentException("Width can't be negative");
         }
     }
 
