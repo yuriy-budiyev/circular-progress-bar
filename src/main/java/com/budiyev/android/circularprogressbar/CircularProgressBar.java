@@ -176,7 +176,6 @@ public class CircularProgressBar extends View {
      */
     public void setAnimateProgress(boolean animate) {
         mAnimateProgress = animate;
-        invalidate();
     }
 
     /**
