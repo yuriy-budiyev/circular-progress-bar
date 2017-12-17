@@ -534,7 +534,9 @@ public class CircularProgressBar extends View {
             if (mIndeterminateSweepAnimator.isRunning()) {
                 mIndeterminateSweepAnimator.cancel();
             }
-            mIndeterminateSweepAnimator.start();
+            if (mVisible) {
+                mIndeterminateSweepAnimator.start();
+            }
         }
     }
 }
