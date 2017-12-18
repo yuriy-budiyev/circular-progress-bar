@@ -10,7 +10,7 @@ Circular progress bar, supports animations and indeterminate mode, highly custom
 Add dependency:
 ```gradle
 dependencies {
-    implementation 'com.budiyev.android:circular-progress-bar:1.1.2'
+    implementation 'com.budiyev.android:circular-progress-bar:1.1.3'
 }
 ```
 Define a view in your layout file:
