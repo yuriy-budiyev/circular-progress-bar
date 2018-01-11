@@ -62,7 +62,7 @@ public class CircularProgressBar extends View {
     private static final int DEFAULT_INDETERMINATE_ROTATION_ANIMATION_DURATION = 1200;
     private static final int DEFAULT_INDETERMINATE_SWEEP_ANIMATION_DURATION = 600;
     private static final boolean DEFAULT_ANIMATE_PROGRESS = true;
-    private static final boolean DEFAULT_DRAW_BACKGROUND_STROKE = true;
+    private static final boolean DEFAULT_DRAW_BACKGROUND_STROKE = false;
     private static final boolean DEFAULT_INDETERMINATE = false;
     private final Runnable mSweepRestartAction = new SweepRestartAction();
     private final RectF mDrawRect = new RectF();
