@@ -50,6 +50,7 @@ import android.view.animation.LinearInterpolator;
  * Circular progress bar
  */
 public class CircularProgressBar extends View {
+    private static final float DEFAULT_SIZE_DP = 48f;
     private static final float DEFAULT_MAXIMUM = 100f;
     private static final float DEFAULT_PROGRESS = 0f;
     private static final float DEFAULT_FOREGROUND_STROKE_WIDTH_DP = 3f;
@@ -71,6 +72,7 @@ public class CircularProgressBar extends View {
     private final ValueAnimator mIndeterminateSweepAnimator = new ValueAnimator();
     private final Paint mForegroundStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint mBackgroundStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private int mDefaultSize;
     private float mMaximum;
     private float mProgress;
     private float mStartAngle;
@@ -324,8 +326,44 @@ public class CircularProgressBar extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-        int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        int defaultWidth = Math.max(getSuggestedMinimumWidth(), mDefaultSize);
+        int defaultHeight = Math.max(getSuggestedMinimumHeight(), mDefaultSize);
+        int width;
+        int height;
+        switch (widthMode) {
+            case MeasureSpec.EXACTLY: {
+                width = widthSize;
+                break;
+            }
+            case MeasureSpec.AT_MOST: {
+                width = Math.min(defaultWidth, widthSize);
+                break;
+            }
+            case MeasureSpec.UNSPECIFIED:
+            default: {
+                width = defaultWidth;
+                break;
+            }
+        }
+        switch (heightMode) {
+            case MeasureSpec.EXACTLY: {
+                height = heightSize;
+                break;
+            }
+            case MeasureSpec.AT_MOST: {
+                height = Math.min(defaultHeight, heightSize);
+                break;
+            }
+            case MeasureSpec.UNSPECIFIED:
+            default: {
+                height = defaultHeight;
+                break;
+            }
+        }
         setMeasuredDimension(width, height);
         invalidateDrawRect(width, height);
     }
@@ -357,6 +395,7 @@ public class CircularProgressBar extends View {
         mForegroundStrokePaint.setStyle(Paint.Style.STROKE);
         mBackgroundStrokePaint.setStyle(Paint.Style.STROKE);
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        mDefaultSize = Math.round(DEFAULT_SIZE_DP * displayMetrics.density);
         if (attributeSet == null) {
             mMaximum = DEFAULT_MAXIMUM;
             mProgress = DEFAULT_PROGRESS;
