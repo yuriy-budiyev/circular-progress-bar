@@ -505,26 +505,26 @@ public class CircularProgressBar extends View {
         }
     }
 
-    private void checkStartAngle(float angle) {
+    private static void checkStartAngle(float angle) {
         if (angle < -360f || angle > 360f) {
             throw new IllegalArgumentException("Start angle value should be between -360 and 360 degrees (inclusive)");
         }
     }
 
-    private void checkIndeterminateMinimumAngle(float angle) {
+    private static void checkIndeterminateMinimumAngle(float angle) {
         if (angle < 0f || angle > 180f) {
             throw new IllegalArgumentException(
                     "Indeterminate minimum angle value should be between 0 and 180 degrees (inclusive)");
         }
     }
 
-    private void checkAnimationDuration(long duration) {
+    private static void checkAnimationDuration(long duration) {
         if (duration < 0) {
             throw new IllegalArgumentException("Animation duration can't be negative");
         }
     }
 
-    private void checkWidth(float width) {
+    private static void checkWidth(float width) {
         if (width < 0f) {
             throw new IllegalArgumentException("Width can't be negative");
         }
