@@ -15,5 +15,10 @@
         <attr format="float" name="indeterminateMinimumAngle"/>
         <attr format="integer" name="indeterminateSweepAnimationDuration"/>
         <attr format="integer" name="indeterminateRotationAnimationDuration"/>
+        <attr format="enum" name="foregroundStrokeCap">
+            <enum name="butt" value="0"/>
+            <enum name="round" value="1"/>
+            <enum name="square" value="2"/>
+        </attr>
     </declare-styleable>
 </resources>

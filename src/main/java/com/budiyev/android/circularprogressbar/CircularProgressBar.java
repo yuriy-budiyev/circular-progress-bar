@@ -57,6 +57,7 @@ public class CircularProgressBar extends View {
     private static final float DEFAULT_BACKGROUND_STROKE_WIDTH_DP = 1f;
     private static final float DEFAULT_START_ANGLE = 270f;
     private static final float DEFAULT_INDETERMINATE_MINIMUM_ANGLE = 60f;
+    private static final int DEFAULT_FOREGROUND_STROKE_CAP = 0;
     private static final int DEFAULT_FOREGROUND_STROKE_COLOR = Color.BLUE;
     private static final int DEFAULT_BACKGROUND_STROKE_COLOR = Color.BLACK;
     private static final int DEFAULT_PROGRESS_ANIMATION_DURATION = 100;
@@ -253,6 +254,14 @@ public class CircularProgressBar extends View {
     }
 
     /**
+     * Foreground stroke cap
+     */
+    public void setForegroundStrokeCap(@NonNull Paint.Cap cap) {
+        mForegroundStrokePaint.setStrokeCap(cap);
+        invalidate();
+    }
+
+    /**
      * Background stroke color
      */
     public void setBackgroundStrokeColor(@ColorInt int color) {
@@ -409,6 +418,7 @@ public class CircularProgressBar extends View {
             mForegroundStrokePaint.setColor(DEFAULT_FOREGROUND_STROKE_COLOR);
             mForegroundStrokePaint
                     .setStrokeWidth(Math.round(DEFAULT_FOREGROUND_STROKE_WIDTH_DP * displayMetrics.density));
+            mForegroundStrokePaint.setStrokeCap(getStrokeCap(DEFAULT_FOREGROUND_STROKE_CAP));
             mBackgroundStrokePaint.setColor(DEFAULT_BACKGROUND_STROKE_COLOR);
             mBackgroundStrokePaint
                     .setStrokeWidth(Math.round(DEFAULT_BACKGROUND_STROKE_WIDTH_DP * displayMetrics.density));
@@ -453,6 +463,8 @@ public class CircularProgressBar extends View {
                         Math.round(DEFAULT_FOREGROUND_STROKE_WIDTH_DP * displayMetrics.density));
                 checkWidth(foregroundWidth);
                 mForegroundStrokePaint.setStrokeWidth(foregroundWidth);
+                mForegroundStrokePaint.setStrokeCap(getStrokeCap(attributes
+                        .getInt(R.styleable.CircularProgressBar_foregroundStrokeCap, DEFAULT_FOREGROUND_STROKE_CAP)));
                 float backgroundWidth = attributes.getDimension(R.styleable.CircularProgressBar_backgroundStrokeWidth,
                         Math.round(DEFAULT_BACKGROUND_STROKE_WIDTH_DP * displayMetrics.density));
                 checkWidth(backgroundWidth);
@@ -567,6 +579,22 @@ public class CircularProgressBar extends View {
     private static void checkWidth(float width) {
         if (width < 0f) {
             throw new IllegalArgumentException("Width can't be negative");
+        }
+    }
+
+    @NonNull
+    private static Paint.Cap getStrokeCap(int value) {
+        switch (value) {
+            case 2: {
+                return Paint.Cap.SQUARE;
+            }
+            case 1: {
+                return Paint.Cap.ROUND;
+            }
+            case 0:
+            default: {
+                return Paint.Cap.BUTT;
+            }
         }
     }
 
