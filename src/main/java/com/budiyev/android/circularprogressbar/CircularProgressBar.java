@@ -330,8 +330,9 @@ public class CircularProgressBar extends View {
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        int defaultWidth = Math.max(getSuggestedMinimumWidth(), mDefaultSize);
-        int defaultHeight = Math.max(getSuggestedMinimumHeight(), mDefaultSize);
+        int defaultSize = mDefaultSize;
+        int defaultWidth = Math.max(getSuggestedMinimumWidth(), defaultSize);
+        int defaultHeight = Math.max(getSuggestedMinimumHeight(), defaultSize);
         int width;
         int height;
         switch (widthMode) {
