@@ -545,7 +545,7 @@ public class CircularProgressBar extends View {
         switch (strokeCap) {
             case SQUARE:
             case ROUND: {
-                float r = Math.min(mDrawRect.width(), mDrawRect.height()) / 2f;
+                float r = mDrawRect.width() / 2f;
                 if (r != 0) {
                     mForegroundStrokeCapAngle = 90f * mForegroundStrokePaint.getStrokeWidth() / (float) Math.PI / r;
                 } else {
