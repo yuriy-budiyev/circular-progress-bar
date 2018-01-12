@@ -237,6 +237,15 @@ public class CircularProgressBar extends View {
     }
 
     /**
+     * Foreground stroke cap
+     */
+    public void setForegroundStrokeCap(@NonNull Paint.Cap cap) {
+        mForegroundStrokePaint.setStrokeCap(cap);
+        invalidateForegroundStrokeCapAngle();
+        invalidate();
+    }
+
+    /**
      * Foreground stroke color
      */
     public void setForegroundStrokeColor(@ColorInt int color) {
@@ -251,14 +260,6 @@ public class CircularProgressBar extends View {
         checkWidth(width);
         mForegroundStrokePaint.setStrokeWidth(width);
         invalidateDrawRect();
-        invalidate();
-    }
-
-    /**
-     * Foreground stroke cap
-     */
-    public void setForegroundStrokeCap(@NonNull Paint.Cap cap) {
-        mForegroundStrokePaint.setStrokeCap(cap);
         invalidate();
     }
 
