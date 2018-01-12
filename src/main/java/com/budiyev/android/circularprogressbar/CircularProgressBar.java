@@ -81,6 +81,7 @@ public class CircularProgressBar extends View {
     private float mIndeterminateSweepAngle;
     private float mIndeterminateOffsetAngle;
     private float mIndeterminateMinimumAngle;
+    private float mForegroundStrokeCapAngle;
     private boolean mIndeterminate;
     private boolean mAnimateProgress;
     private boolean mDrawBackgroundStroke;
@@ -330,6 +331,16 @@ public class CircularProgressBar extends View {
                 sweep = 360f;
             }
         }
+        float capAngle = mForegroundStrokeCapAngle;
+        if (capAngle != 0f && Math.abs(sweep) != 360f) {
+            if (sweep > 0) {
+                start += capAngle;
+                sweep -= capAngle * 2f;
+            } else if (sweep < 0) {
+                start -= capAngle;
+                sweep += capAngle * 2f;
+            }
+        }
         canvas.drawArc(mDrawRect, start, sweep, false, mForegroundStrokePaint);
     }
 
@@ -520,6 +531,32 @@ public class CircularProgressBar extends View {
         } else {
             mDrawRect.set(thickness / 2f + 1f, thickness / 2f + 1f, width - thickness / 2f - 1f,
                     height - thickness / 2f - 1f);
+        }
+        invalidateForegroundStrokeCapAngle();
+    }
+
+    private void invalidateForegroundStrokeCapAngle() {
+        Paint.Cap strokeCap = mForegroundStrokePaint.getStrokeCap();
+        if (strokeCap == null) {
+            mForegroundStrokeCapAngle = 0f;
+            return;
+        }
+        switch (strokeCap) {
+            case SQUARE:
+            case ROUND: {
+                float r = mDrawRect.centerX();
+                if (r != 0) {
+                    mForegroundStrokeCapAngle = 90f * mForegroundStrokePaint.getStrokeWidth() / (float) Math.PI / r;
+                } else {
+                    mForegroundStrokeCapAngle = 0f;
+                }
+                break;
+            }
+            case BUTT:
+            default: {
+                mForegroundStrokeCapAngle = 0f;
+                break;
+            }
         }
     }
 
