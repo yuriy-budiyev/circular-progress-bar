@@ -6,7 +6,7 @@
 
 Circular progress bar, supports animations and indeterminate mode, highly customizable
 
-### Usage
+### Usage ([sample](https://github.com/yuriy-budiyev/lib-demo-app))
 Add dependency:
 ```gradle
 dependencies {
