@@ -66,9 +66,11 @@ public class MainActivity extends AppCompatActivity {
        setContentView(R.layout.activity_main);
        CircularProgressBar progressBar = findViewById(R.id.progress_bar);
        progressBar.setProgress(30f);
-       //Progress bar can be fully configured from code
    }
 }
 ```
+
+Progress bar can be fully configured from code
+
 ### Preview
 ![Preview screenshot](https://raw.githubusercontent.com/yuriy-budiyev/circular-progress-bar/master/images/circular_progress_bar_preview.png)
