@@ -739,14 +739,14 @@ public final class CircularProgressBar extends View {
     private final class ProgressUpdateListener implements ValueAnimator.AnimatorUpdateListener {
         @Override
         public void onAnimationUpdate(final ValueAnimator animation) {
-            setProgressInternal((float) animation.getAnimatedValue());
+            setProgressInternal((Float) animation.getAnimatedValue());
         }
     }
 
     private final class StartUpdateListener implements ValueAnimator.AnimatorUpdateListener {
         @Override
         public void onAnimationUpdate(final ValueAnimator animation) {
-            mIndeterminateStartAngle = (float) animation.getAnimatedValue();
+            mIndeterminateStartAngle = (Float) animation.getAnimatedValue();
             invalidate();
         }
     }
@@ -754,7 +754,7 @@ public final class CircularProgressBar extends View {
     private final class SweepUpdateListener implements ValueAnimator.AnimatorUpdateListener {
         @Override
         public void onAnimationUpdate(final ValueAnimator animation) {
-            mIndeterminateSweepAngle = (float) animation.getAnimatedValue();
+            mIndeterminateSweepAngle = (Float) animation.getAnimatedValue();
         }
     }
 
