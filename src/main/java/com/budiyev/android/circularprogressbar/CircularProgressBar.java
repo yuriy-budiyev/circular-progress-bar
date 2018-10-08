@@ -433,9 +433,15 @@ public final class CircularProgressBar extends View {
             if (sweep > 0) {
                 start += capAngle;
                 sweep -= capAngle * 2f;
+                if (sweep < 0.0001f) {
+                    sweep = 0.0001f;
+                }
             } else if (sweep < 0) {
                 start -= capAngle;
                 sweep += capAngle * 2f;
+                if (sweep > -0.0001f) {
+                    sweep = -0.0001f;
+                }
             }
         }
         canvas.drawArc(mDrawRect, start, sweep, false, mForegroundStrokePaint);
