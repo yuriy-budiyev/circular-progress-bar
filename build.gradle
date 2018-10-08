@@ -25,7 +25,7 @@ apply plugin: 'com.jfrog.bintray'
 ext {
     libraryName = 'CircularProgressBar'
     libraryDescription = 'Circular progress bar'
-    libraryVersion = '1.2.0'
+    libraryVersion = '1.2.1'
     artifact = 'circular-progress-bar'
     developerId = 'yuriy-budiyev'
     developerName = 'Yuriy Budiyev'
@@ -45,7 +45,7 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 21
+        versionCode 22
         versionName libraryVersion
     }
 
