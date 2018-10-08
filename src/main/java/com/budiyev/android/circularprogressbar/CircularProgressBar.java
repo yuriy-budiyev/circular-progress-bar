@@ -32,6 +32,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
+
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
@@ -40,11 +46,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleRes;
-import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 
 /**
  * Circular progress bar
@@ -73,20 +74,20 @@ public final class CircularProgressBar extends View {
     private final ValueAnimator mIndeterminateSweepAnimator = new ValueAnimator();
     private final Paint mForegroundStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint mBackgroundStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private int mDefaultSize;
-    private float mMaximum;
-    private float mProgress;
-    private float mStartAngle;
-    private float mIndeterminateStartAngle;
-    private float mIndeterminateSweepAngle;
-    private float mIndeterminateOffsetAngle;
-    private float mIndeterminateMinimumAngle;
-    private float mForegroundStrokeCapAngle;
-    private boolean mIndeterminate;
-    private boolean mAnimateProgress;
-    private boolean mDrawBackgroundStroke;
-    private boolean mIndeterminateGrowMode;
-    private boolean mVisible;
+    private int mDefaultSize = 0;
+    private float mMaximum = 0f;
+    private float mProgress = 0f;
+    private float mStartAngle = 0f;
+    private float mIndeterminateStartAngle = 0f;
+    private float mIndeterminateSweepAngle = 0f;
+    private float mIndeterminateOffsetAngle = 0f;
+    private float mIndeterminateMinimumAngle = 0f;
+    private float mForegroundStrokeCapAngle = 0f;
+    private boolean mIndeterminate = false;
+    private boolean mAnimateProgress = false;
+    private boolean mDrawBackgroundStroke = false;
+    private boolean mIndeterminateGrowMode = false;
+    private boolean mVisible = false;
 
     public CircularProgressBar(@NonNull final Context context) {
         super(context);
