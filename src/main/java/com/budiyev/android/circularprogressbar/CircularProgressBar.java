@@ -24,6 +24,7 @@
 package com.budiyev.android.circularprogressbar;
 
 import android.animation.Animator;
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -67,6 +68,8 @@ public final class CircularProgressBar extends View {
     private static final boolean DEFAULT_ANIMATE_PROGRESS = true;
     private static final boolean DEFAULT_DRAW_BACKGROUND_STROKE = false;
     private static final boolean DEFAULT_INDETERMINATE = false;
+    private static final TimeInterpolator DEFAULT_PROGRESS_ANIMATOR = new DecelerateInterpolator();
+
     private final Runnable mSweepRestartAction = new SweepRestartAction();
     private final RectF mDrawRect = new RectF();
     private final ValueAnimator mProgressAnimator = new ValueAnimator();
@@ -152,6 +155,18 @@ public final class CircularProgressBar extends View {
                 setProgressInternal(progress);
             }
         }
+    }
+
+    /**
+     * Set the current animation interpolator
+     */
+    public void setProgressInterpolator(final TimeInterpolator interpolator) {
+        if (mVisible) {
+            if (mProgressAnimator.isRunning()) {
+                mProgressAnimator.end();
+            }
+        }
+        mProgressAnimator.setInterpolator(interpolator == null ? DEFAULT_PROGRESS_ANIMATOR : interpolator);
     }
 
     /**
@@ -600,7 +615,7 @@ public final class CircularProgressBar extends View {
                 }
             }
         }
-        mProgressAnimator.setInterpolator(new DecelerateInterpolator());
+        mProgressAnimator.setInterpolator(DEFAULT_PROGRESS_ANIMATOR);
         mProgressAnimator.addUpdateListener(new ProgressUpdateListener());
         mIndeterminateStartAnimator.setFloatValues(360f);
         mIndeterminateStartAnimator.setRepeatMode(ValueAnimator.RESTART);
