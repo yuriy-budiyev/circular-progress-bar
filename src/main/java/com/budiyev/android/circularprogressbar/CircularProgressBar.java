@@ -24,6 +24,7 @@
 package com.budiyev.android.circularprogressbar;
 
 import android.animation.Animator;
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -67,6 +68,10 @@ public final class CircularProgressBar extends View {
     private static final boolean DEFAULT_ANIMATE_PROGRESS = true;
     private static final boolean DEFAULT_DRAW_BACKGROUND_STROKE = false;
     private static final boolean DEFAULT_INDETERMINATE = false;
+    private static final TimeInterpolator DEFAULT_PROGRESS_ANIMATION_INTERPOLATOR = new DecelerateInterpolator();
+    private static final TimeInterpolator DEFAULT_SWEEP_ANIMATION_INTERPOLATOR = new LinearInterpolator();
+    private static final TimeInterpolator DEFAULT_START_ANIMATION_INTERPOLATOR = new DecelerateInterpolator();
+
     private final Runnable mSweepRestartAction = new SweepRestartAction();
     private final RectF mDrawRect = new RectF();
     private final ValueAnimator mProgressAnimator = new ValueAnimator();
@@ -132,6 +137,46 @@ public final class CircularProgressBar extends View {
     }
 
     /**
+     * Get interpolator used by start animation in
+     * indeterminate mode
+     */
+    public TimeInterpolator getIndeterminateStartInterpolator() {
+        return mIndeterminateStartAnimator.getInterpolator();
+    }
+
+    /**
+     * Set interpolation for start animator that
+     * are used in indeterminate mode.
+     */
+    public void setIndeterminateStartInterpolator(final TimeInterpolator startInterpolator) {
+        stopIndeterminateAnimations();
+        mIndeterminateStartAnimator.setInterpolator(
+                startInterpolator == null ? DEFAULT_START_ANIMATION_INTERPOLATOR : startInterpolator
+        );
+        setIndeterminate(mIndeterminate);
+    }
+
+    /**
+     * Return interpolator used by Sweep Animation in
+     * indeterminate mode
+     */
+    public TimeInterpolator getIndeterminateSweepInterpolator() {
+        return mIndeterminateSweepAnimator.getInterpolator();
+    }
+
+    /**
+     * Set interpolation for sweep animator that
+     * are used in indeterminate mode.
+     */
+    public void setIndeterminateSweepInterpolator(final TimeInterpolator sweepInterpolator) {
+        stopIndeterminateAnimations();
+        mIndeterminateSweepAnimator.setInterpolator(
+                sweepInterpolator == null ? DEFAULT_SWEEP_ANIMATION_INTERPOLATOR : sweepInterpolator
+        );
+        setIndeterminate(mIndeterminate);
+    }
+
+    /**
      * Get current progress value for non-indeterminate mode
      */
     public float getProgress() {
@@ -152,6 +197,25 @@ public final class CircularProgressBar extends View {
                 setProgressInternal(progress);
             }
         }
+    }
+
+    /**
+     * Set the current animation interpolator
+     */
+    public void setProgressInterpolator(final TimeInterpolator interpolator) {
+        if (mVisible) {
+            if (mProgressAnimator.isRunning()) {
+                mProgressAnimator.end();
+            }
+        }
+        mProgressAnimator.setInterpolator(interpolator == null ? DEFAULT_PROGRESS_ANIMATION_INTERPOLATOR : interpolator);
+    }
+
+    /**
+     * Returns progress animator used to animate setting the progress
+     */
+    public TimeInterpolator getProgressInterpolator() {
+        return mProgressAnimator.getInterpolator();
     }
 
     /**
@@ -600,15 +664,15 @@ public final class CircularProgressBar extends View {
                 }
             }
         }
-        mProgressAnimator.setInterpolator(new DecelerateInterpolator());
+        mProgressAnimator.setInterpolator(DEFAULT_PROGRESS_ANIMATION_INTERPOLATOR);
         mProgressAnimator.addUpdateListener(new ProgressUpdateListener());
         mIndeterminateStartAnimator.setFloatValues(360f);
         mIndeterminateStartAnimator.setRepeatMode(ValueAnimator.RESTART);
         mIndeterminateStartAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        mIndeterminateStartAnimator.setInterpolator(new LinearInterpolator());
+        mIndeterminateStartAnimator.setInterpolator(DEFAULT_START_ANIMATION_INTERPOLATOR);
         mIndeterminateStartAnimator.addUpdateListener(new StartUpdateListener());
         mIndeterminateSweepAnimator.setFloatValues(360f - mIndeterminateMinimumAngle * 2f);
-        mIndeterminateSweepAnimator.setInterpolator(new DecelerateInterpolator());
+        mIndeterminateSweepAnimator.setInterpolator(DEFAULT_SWEEP_ANIMATION_INTERPOLATOR);
         mIndeterminateSweepAnimator.addUpdateListener(new SweepUpdateListener());
         mIndeterminateSweepAnimator.addListener(new SweepAnimatorListener());
     }
