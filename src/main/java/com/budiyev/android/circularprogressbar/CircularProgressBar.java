@@ -47,6 +47,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleRes;
 
+import java.util.function.Consumer;
+
 /**
  * Circular progress bar
  */
@@ -87,7 +89,8 @@ public final class CircularProgressBar extends View {
     private boolean mAnimateProgress = false;
     private boolean mDrawBackgroundStroke = false;
     private boolean mIndeterminateGrowMode = false;
-    private boolean mVisible = false;
+    private boolean isVisible = false;
+    private Runnable queue = null;
 
     public CircularProgressBar(@NonNull final Context context) {
         super(context);
@@ -112,6 +115,23 @@ public final class CircularProgressBar extends View {
         initialize(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    private void setVisible(boolean visible) {
+        isVisible = visible;
+        if (isVisible && queue != null) {
+            queue.run();
+            queue = null;
+        }
+    }
+
+    private void setQueue(Runnable queue) {
+        if (isVisible) {
+            if (queue != null)
+                queue.run();
+            this.queue = null;
+        } else
+            this.queue = queue;
+    }
+
     /**
      * Indeterminate mode
      */
@@ -126,8 +146,11 @@ public final class CircularProgressBar extends View {
         stopIndeterminateAnimations();
         mIndeterminate = indeterminate;
         invalidate();
-        if (mVisible && indeterminate) {
-            startIndeterminateAnimations();
+        if (indeterminate) {
+            setQueue(new Runnable() {
+                @Override public void run() {
+                    startIndeterminateAnimations();
+                }});
         }
     }
 
@@ -146,8 +169,11 @@ public final class CircularProgressBar extends View {
             mProgress = progress;
         } else {
             stopProgressAnimation();
-            if (mVisible && mAnimateProgress) {
-                setProgressAnimated(progress);
+            if (mAnimateProgress) {
+                setQueue(new Runnable() {
+                    @Override public void run() {
+                        setProgressAnimated(progress);
+                    }});
             } else {
                 setProgressInternal(progress);
             }
@@ -213,7 +239,7 @@ public final class CircularProgressBar extends View {
      */
     public void setProgressAnimationDuration(@IntRange(from = 0) final long duration) {
         checkAnimationDuration(duration);
-        if (mVisible) {
+        if (isVisible) {
             if (mProgressAnimator.isRunning()) {
                 mProgressAnimator.end();
             }
@@ -238,8 +264,11 @@ public final class CircularProgressBar extends View {
         mIndeterminateMinimumAngle = angle;
         mIndeterminateSweepAnimator.setFloatValues(360f - angle * 2f);
         invalidate();
-        if (mVisible && mIndeterminate) {
-            startIndeterminateAnimations();
+        if (mIndeterminate) {
+            setQueue(new Runnable() {
+                @Override public void run() {
+                    startIndeterminateAnimations();
+                }});
         }
     }
 
@@ -259,8 +288,11 @@ public final class CircularProgressBar extends View {
         stopIndeterminateAnimations();
         mIndeterminateStartAnimator.setDuration(duration);
         invalidate();
-        if (mVisible && mIndeterminate) {
-            startIndeterminateAnimations();
+        if (mIndeterminate) {
+            setQueue(new Runnable() {
+                @Override public void run() {
+                    startIndeterminateAnimations();
+                }});
         }
     }
 
@@ -280,8 +312,11 @@ public final class CircularProgressBar extends View {
         stopIndeterminateAnimations();
         mIndeterminateSweepAnimator.setDuration(duration);
         invalidate();
-        if (mVisible && mIndeterminate) {
-            startIndeterminateAnimations();
+        if (mIndeterminate) {
+            setQueue(new Runnable() {
+                @Override public void run() {
+                    startIndeterminateAnimations();
+                }});
         }
     }
 
@@ -389,7 +424,7 @@ public final class CircularProgressBar extends View {
     @Override
     public void onVisibilityAggregated(final boolean visible) {
         super.onVisibilityAggregated(visible);
-        mVisible = visible;
+        setVisible(visible);
         if (mIndeterminate) {
             if (visible) {
                 startIndeterminateAnimations();
@@ -500,7 +535,7 @@ public final class CircularProgressBar extends View {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        mVisible = true;
+        setVisible(true);
         if (mIndeterminate) {
             startIndeterminateAnimations();
         }
@@ -509,7 +544,7 @@ public final class CircularProgressBar extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        mVisible = false;
+        setVisible(false);
         stopIndeterminateAnimations();
         stopProgressAnimation();
     }
@@ -801,9 +836,10 @@ public final class CircularProgressBar extends View {
             if (mIndeterminateSweepAnimator.isRunning()) {
                 mIndeterminateSweepAnimator.cancel();
             }
-            if (mVisible) {
-                mIndeterminateSweepAnimator.start();
-            }
+            setQueue(new Runnable() {
+                @Override public void run() {
+                    mIndeterminateSweepAnimator.start();
+                }});
         }
     }
 }
