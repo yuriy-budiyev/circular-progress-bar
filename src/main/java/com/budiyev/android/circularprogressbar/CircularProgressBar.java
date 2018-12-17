@@ -677,10 +677,10 @@ public final class CircularProgressBar extends View {
         mIndeterminateRotationAnimator.setFloatValues(360f);
         mIndeterminateRotationAnimator.setRepeatMode(ValueAnimator.RESTART);
         mIndeterminateRotationAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        mIndeterminateRotationAnimator.setInterpolator(new DecelerateInterpolator());
+        mIndeterminateRotationAnimator.setInterpolator(new LinearInterpolator());
         mIndeterminateRotationAnimator.addUpdateListener(new StartUpdateListener());
         mIndeterminateSweepAnimator.setFloatValues(360f - mIndeterminateMinimumAngle * 2f);
-        mIndeterminateSweepAnimator.setInterpolator(new LinearInterpolator());
+        mIndeterminateSweepAnimator.setInterpolator(new DecelerateInterpolator());
         mIndeterminateSweepAnimator.addUpdateListener(new SweepUpdateListener());
         mIndeterminateSweepAnimator.addListener(new SweepAnimatorListener());
     }
