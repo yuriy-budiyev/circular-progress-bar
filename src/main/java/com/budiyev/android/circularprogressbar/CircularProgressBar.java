@@ -236,7 +236,7 @@ public final class CircularProgressBar extends View {
     /**
      * Progress animation interpolator for non-indeterminate mode
      */
-    public void setProgressAnimationInterpolator(@NonNull TimeInterpolator interpolator) {
+    public void setProgressAnimationInterpolator(@NonNull final TimeInterpolator interpolator) {
         //noinspection ConstantConditions
         if (interpolator == null) {
             throw new IllegalArgumentException("Interpolator can't be null");
@@ -306,7 +306,7 @@ public final class CircularProgressBar extends View {
     /**
      * Rotation animation interpolator for indeterminate mode
      */
-    public void setIndeterminateRotationAnimationInterpolator(@NonNull TimeInterpolator interpolator) {
+    public void setIndeterminateRotationAnimationInterpolator(@NonNull final TimeInterpolator interpolator) {
         //noinspection ConstantConditions
         if (interpolator == null) {
             throw new IllegalArgumentException("Interpolator can't be null");
@@ -353,7 +353,7 @@ public final class CircularProgressBar extends View {
     /**
      * Sweep animation interpolator for indeterminate mode
      */
-    public void setIndeterminateSweepAnimationInterpolator(@NonNull TimeInterpolator interpolator) {
+    public void setIndeterminateSweepAnimationInterpolator(@NonNull final TimeInterpolator interpolator) {
         //noinspection ConstantConditions
         if (interpolator == null) {
             throw new IllegalArgumentException("Interpolator can't be null");
