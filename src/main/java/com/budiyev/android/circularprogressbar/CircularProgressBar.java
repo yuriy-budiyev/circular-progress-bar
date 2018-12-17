@@ -128,7 +128,7 @@ public final class CircularProgressBar extends View {
         mIndeterminate = indeterminate;
         invalidate();
         if (mVisible && indeterminate) {
-            cancelProgressAnimation();
+            endProgressAnimation();
             startIndeterminateAnimations();
         }
     }
