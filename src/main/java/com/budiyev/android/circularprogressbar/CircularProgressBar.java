@@ -124,11 +124,11 @@ public final class CircularProgressBar extends View {
      * Indeterminate mode, disabled by default
      */
     public void setIndeterminate(final boolean indeterminate) {
-        cancelProgressAnimation();
         cancelIndeterminateAnimations();
         mIndeterminate = indeterminate;
         invalidate();
         if (mVisible && indeterminate) {
+            cancelProgressAnimation();
             startIndeterminateAnimations();
         }
     }
