@@ -10,9 +10,9 @@ Circular progress bar, supports animations and indeterminate mode, highly custom
 Step 1. Add it in your root build.gradle at the end of repositories:
 ```gradle
 allprojects {
-    ...
+
     repositories {
-        ...
+
         maven { url 'https://jitpack.io' }
    }
 }
@@ -21,9 +21,9 @@ allprojects {
 or in settings.gradle file:
 ```gradle
 dependencyResolutionManagement {
-    ...
+
     repositories {
-        ...
+
         maven { url 'https://jitpack.io' }
     }
 }
