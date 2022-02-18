@@ -1,4 +1,5 @@
 # Circular Progress Bar
+[![Release](https://jitpack.io/v/yuriy-budiyev/circular-progress-bar.svg)](https://jitpack.io/#yuriy-budiyev/circular-progress-bar)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Circular%20Progress%20Bar-blue.svg?style=flat)](https://android-arsenal.com/details/1/6515)
 [![API](https://img.shields.io/badge/API-14%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=14)
 
