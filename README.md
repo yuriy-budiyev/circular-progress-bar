@@ -1,18 +1,39 @@
 # Circular Progress Bar
-[ ![Download](https://api.bintray.com/packages/yuriy-budiyev/maven/circular-progress-bar/images/download.svg) ](https://bintray.com/yuriy-budiyev/maven/circular-progress-bar/_latestVersion)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Circular%20Progress%20Bar-blue.svg?style=flat)](https://android-arsenal.com/details/1/6515)
 [![API](https://img.shields.io/badge/API-14%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=14)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/04aff697e57642bb96579fbaa6cc3dad)](https://www.codacy.com/app/yuriy-budiyev/circular-progress-bar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yuriy-budiyev/circular-progress-bar&amp;utm_campaign=Badge_Grade)
 
 Circular progress bar, supports animations and indeterminate mode, highly customizable, Kotlin-friendly
 
 ### Usage ([sample](https://github.com/yuriy-budiyev/lib-demo-app))
-Add dependency:
+
+Step 1. Add it in your root build.gradle at the end of repositories:
 ```gradle
-dependencies {
-    implementation 'com.budiyev.android:circular-progress-bar:1.2.2'
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+   }
 }
 ```
+
+or in settings.gradle file:
+```gradle
+dependencyResolutionManagement {
+    ...
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+Step 2. Add dependency:
+```gradle
+dependencies {
+    implementation 'com.github.yuriy-budiyev:circular-progress-bar:1.2.3'
+}
+```
+
 Define a view in your layout file:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -43,6 +64,7 @@ Define a view in your layout file:
         app:startAngle="270"/>
 </FrameLayout>
 ```
+
 And (or) add following code to your activity:
 
 Kotlin
